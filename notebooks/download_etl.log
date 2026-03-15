@@ -13,3 +13,45 @@
 2026-03-15 16:21:56,720 - INFO - Iniciando Execução. Datasets mapeados: ['pam', 'ppm_bovinos', 'pib_vab_agro', 'ibama_embargos', 'comex_stat_2023']
 2026-03-15 16:21:56,720 - INFO - ==================================================
 2026-03-15 16:21:56,720 - INFO - [pam] Iniciando extração.
+2026-03-15 16:31:38,776 - INFO - [pam] Concluído com Sucesso! Linhas carregadas: 777280
+2026-03-15 16:31:38,776 - INFO - [ppm_bovinos] Iniciando extração.
+2026-03-15 16:31:39,614 - WARNING - Aviso PPM (Ano 2010): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:39,617 - WARNING - Aviso PPM (Ano 2011): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:39,842 - WARNING - Aviso PPM (Ano 2012): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:40,354 - WARNING - Aviso PPM (Ano 2014): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:40,362 - WARNING - Aviso PPM (Ano 2013): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:40,549 - WARNING - Aviso PPM (Ano 2015): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:41,068 - WARNING - Aviso PPM (Ano 2016): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:41,071 - WARNING - Aviso PPM (Ano 2017): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:41,233 - WARNING - Aviso PPM (Ano 2018): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:41,793 - WARNING - Aviso PPM (Ano 2020): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:41,932 - WARNING - Aviso PPM (Ano 2021): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:42,013 - WARNING - Aviso PPM (Ano 2019): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:42,740 - WARNING - Aviso PPM (Ano 2022): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:43,639 - WARNING - Aviso PPM (Ano 2023): Parâmetro V (Variável) com código 3135 inexistente na tabela
+2026-03-15 16:31:43,642 - INFO - [ppm_bovinos] Concluído com Sucesso! Linhas carregadas: 0
+2026-03-15 16:31:43,642 - INFO - [pib_vab_agro] Iniciando extração.
+2026-03-15 16:31:44,421 - WARNING - Aviso PIB (Ano 2010): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:44,423 - WARNING - Aviso PIB (Ano 2011): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:44,423 - WARNING - Aviso PIB (Ano 2012): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:45,169 - WARNING - Aviso PIB (Ano 2014): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:45,172 - WARNING - Aviso PIB (Ano 2013): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:45,176 - WARNING - Aviso PIB (Ano 2015): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:45,933 - WARNING - Aviso PIB (Ano 2017): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:45,935 - WARNING - Aviso PIB (Ano 2016): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:45,940 - WARNING - Aviso PIB (Ano 2018): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:46,736 - WARNING - Aviso PIB (Ano 2021): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:46,738 - WARNING - Aviso PIB (Ano 2020): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:46,742 - WARNING - Aviso PIB (Ano 2019): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:47,459 - WARNING - Aviso PIB (Ano 2023): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:47,572 - WARNING - Aviso PIB (Ano 2022): Quantidade de valores solicitados: 256220 excedeu o limite: 50000
+2026-03-15 16:31:47,575 - INFO - [pib_vab_agro] Concluído com Sucesso! Linhas carregadas: 0
+2026-03-15 16:31:47,575 - INFO - [ibama_embargos] Iniciando extração.
+2026-03-15 16:31:47,575 - INFO - Tentando baixar direto da URL: https://dadosabertos.ibama.gov.br/dataset/c277726a-9351-40be-aaa7-72cecd1affdb/resource/c590adcd-f8ee-4444-a696-ed754020c910/download/relatorio_embargos.csv
+2026-03-15 16:31:47,771 - ERROR - Erro ao baixar https://dadosabertos.ibama.gov.br/dataset/c277726a-9351-40be-aaa7-72cecd1affdb/resource/c590adcd-f8ee-4444-a696-ed754020c910/download/relatorio_embargos.csv: HTTP Error 403: Forbidden
+2026-03-15 16:31:47,772 - INFO - [ibama_embargos] Concluído com Sucesso! Linhas carregadas: 0
+2026-03-15 16:31:47,772 - INFO - [comex_stat_2023] Iniciando extração.
+2026-03-15 16:31:47,772 - INFO - Tentando baixar direto da URL: https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2023.csv
+2026-03-15 16:31:47,902 - ERROR - Erro ao baixar https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2023.csv: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)>
+2026-03-15 16:31:47,902 - INFO - [comex_stat_2023] Concluído com Sucesso! Linhas carregadas: 0
+2026-03-15 16:31:47,902 - INFO - ================ Processo de execução de lote finalizado ================

@@ -14,8 +14,8 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Data (ignoring local data directories based on workspace structure)
-notebooks/data/landing/
-notebooks/data/bronze/
+# notebooks/data/landing/
+# notebooks/data/bronze/
 
 # OS generated files
 .DS_Store

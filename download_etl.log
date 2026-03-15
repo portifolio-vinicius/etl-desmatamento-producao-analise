@@ -1,0 +1,4 @@
+2026-03-15 16:47:23,209 - INFO - ==================================================
+2026-03-15 16:47:23,210 - INFO - Iniciando Execução. Datasets mapeados: ['pam', 'ppm_bovinos', 'pib_vab_agro', 'ibama_embargos', 'comex_stat_2023']
+2026-03-15 16:47:23,210 - INFO - ==================================================
+2026-03-15 16:47:23,210 - INFO - [pam] Iniciando extração.
