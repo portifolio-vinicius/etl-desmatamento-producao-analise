@@ -1,0 +1,14 @@
+pandas
+sidrapy
+requests
+tqdm
+pyarrow
+geopandas
+matplotlib
+seaborn
+scipy
+scikit-learn
+jupyter
+ipykernel
+python-dotenv
+duckdb
