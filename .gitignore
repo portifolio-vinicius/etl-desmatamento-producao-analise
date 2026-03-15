@@ -1,0 +1,27 @@
+# Environments
+.venv/
+venv/
+ENV/
+env/
+python/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data (ignoring local data directories based on workspace structure)
+notebooks/data/landing/
+notebooks/data/bronze/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
