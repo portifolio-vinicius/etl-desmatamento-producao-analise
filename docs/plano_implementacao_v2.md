@@ -21,10 +21,16 @@ Antes de baixar os dados, defina o ambiente de trabalho para suportar o volume (
 Para reduzir o risco de gargalos, especialmente com bases espaciais e séries temporais complexas, o escopo foi dividido em sprints modulares. Cada ciclo entrega um resultado analítico funcional.
 
 ### Sprint 0: Ingestão e Padronização Parquet (Data Lake Prep)
-*   **Objetivo:** Download automatizado e conversão de fontes brutas para Parquet.
-*   **Ação:** Download via APIs (`basedosdados`, `sidrapy`) e scrapers de bases governamentais (PRODES, IBAMA, Comex Stat).
-*   **Processamento:** Conversão imediata de CSV/JSON para **Parquet** (compressão `snappy`) para otimizar leitura e memória.
-*   **Artefato:** Landing Zone (Dados Brutos) e Bronze Layer (Dados em Parquet com nomes de colunas padronizados).
+*   **Objetivo:** Download automatizado e conversão de fontes brutas para Parquet de forma modular.
+*   **Ação:** Implementação de notebooks individuais para teste e validação de cada fonte de dados, garantindo resiliência contra falhas de API ou mudanças de formato.
+*   **Notebooks de Extração:**
+    *   `test-download-pam.ipynb`: Produção Agrícola Municipal (SIDRA).
+    *   `test-download-ppm.ipynb`: Pecuária Municipal - Bovinos (SIDRA).
+    *   `test-download-pib.ipynb`: PIB VAB Agropecuária (SIDRA).
+    *   `test-download-ibama.ipynb`: Embargos Ambientais (Shapefile/Geopandas).
+    *   `test-download-comex.ipynb`: Exportações (COMEX STAT com correção SSL).
+*   **Processamento:** Conversão imediata de CSV/SHP para **Parquet** (compressão `snappy`) na camada Bronze.
+*   **Artefato:** Landing Zone e Bronze Layer organizada por fonte de dados.
 
 ### Sprint 1: Fundação de Dados Tabulares (Limpeza e Join)
 *   **Objetivo:** Engenharia de dados socioeconômicos e ambientais a partir dos arquivos Parquet.
