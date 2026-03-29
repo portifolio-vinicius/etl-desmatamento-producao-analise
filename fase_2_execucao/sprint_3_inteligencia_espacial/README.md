@@ -55,7 +55,7 @@ Integrar geometrias (GeoParquet) e analisar a influência territorial dos embarg
 
 - `data/02_silver/espacial/embargos_com_geometria.parquet` (GeoParquet Silver)
 - `data/03_gold/espacial/spillover_adjacencia.parquet` (Tabela de Impacto)
-- `fase_2_execucao/sprint_3_inteligencia_espacial/visualizacoes/mapa_densidade_embargos.png`
+- `fase_3_execucao_analitica/sprint_3_inteligencia_espacial/visualizacoes/mapa_densidade_embargos.png`
 
 ---
 

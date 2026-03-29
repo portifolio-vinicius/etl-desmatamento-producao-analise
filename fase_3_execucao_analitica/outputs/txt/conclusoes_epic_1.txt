@@ -1,0 +1,18 @@
+# CONCLUSÕES ÉPICA 1: A FALÁCIA DA EFICIÊNCIA ECONÔMICA
+Data: 29/03/2026 15:26
+
+1. ICA (ÍNDICE DE CUSTO AMBIENTAL):
+   - O ICA médio identificado é de 0.001180 ha/R$ mil.
+   - Apenas 39 municípios apresentam desmatamento e VAB positivos simultaneamente de forma significativa.
+
+2. CORRELAÇÃO ΔDESMATAMENTO VS ΔVAB:
+   - A correlação de Pearson identificada é de -0.0099.
+   - RESULTADO: O desmatamento NÃO está associado ao crescimento do VAB agropecuário (correlação nula/fraca).
+
+3. CONCENTRAÇÃO TERRITORIAL:
+   - Apenas 7% (7/100) dos maiores desmatadores estão entre os 100 maiores produtores.
+   - Existem 34 municípios críticos com ALTO desmatamento e BAIXO VAB (ranking > 2000).
+
+CONCLUSÃO GERAL: A hipótese de que o desmatamento é necessário para o crescimento econômico 
+agropecuário é REFUTADA pelos dados. O crescimento do VAB ocorre em áreas consolidadas 
+sem a necessidade de novas aberturas de área.

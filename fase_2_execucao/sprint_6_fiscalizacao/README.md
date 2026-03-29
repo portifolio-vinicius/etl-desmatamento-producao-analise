@@ -222,7 +222,7 @@
 ## 📂 Estrutura de Diretórios
 
 ```
-fase_2_execucao/
+fase_3_execucao_analitica/
 └── sprint_6_fiscalizacao/
     ├── VALIDACAO_DADOS_SPRINT6.md       # Validação detalhada
     ├── resumo_contexto_sprint6.json     # Resumo em JSON

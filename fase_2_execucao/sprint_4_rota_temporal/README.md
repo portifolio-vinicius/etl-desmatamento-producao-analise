@@ -342,7 +342,7 @@ seaborn>=0.12.0
 
 ## 9. Referências
 
-- **Sprint 2 (MVP Econômico):** `/fase_2_execucao/sprint_2_gold_mvp/README.md`
+- **Sprint 2 (MVP Econômico):** `/fase_3_execucao_analitica/sprint_2_gold_mvp/README.md`
 - **Plano de Implementação:** `/docs/plano_implementacao_v2.md`
 - **Estrutura de Análise:** `/docs/estrutura_analise.md`
 - **Validação de Dados:** `VALIDACAO_DADOS_SPRINT4.md`
