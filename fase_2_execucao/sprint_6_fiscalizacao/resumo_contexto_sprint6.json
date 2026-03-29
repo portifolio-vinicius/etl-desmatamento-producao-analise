@@ -1,0 +1,112 @@
+{
+    "sprint": 6,
+    "titulo": "O Peso da Fiscalização: Efetividade dos Embargos",
+    "status": "PRONTO PARA EXECUÇÃO",
+    "data_validacao": "2026-03-29",
+    
+    "objetivo_principal": "Medir se os embargos do IBAMA reduzem desmatamento e produção agropecuária nos municípios embargados",
+    
+    "perguntas_pesquisa": [
+        "Embargos reduzem desmatamento?",
+        "Embargos impactam produção agropecuária (PAM/PPM)?",
+        "Qual o tempo de reação entre embargo e queda de produção?",
+        "Quem são os reincidentes em crimes ambientais?",
+        "Embargos são efetivos na redução do desmatamento?"
+    ],
+    
+    "periodo_analise": {
+        "inicio": 2021,
+        "fim": 2023,
+        "anos": 3,
+        "justificativa": "Dados de IBAMA, PAM e PPM com excelente cobertura (PIB restrito até 2021)"
+    },
+    
+    "dados_disponiveis": {
+        "ibama_bronze": {
+            "arquivo": "data/01_bronze/ibama/ibama_embargos/embargos_ibama_tabular.parquet",
+            "registros": 88586,
+            "periodo": "1987-2025",
+            "municipios_historico": 3769,
+            "municipios_analise_21_23": 1249,
+            "campos_criticos": {
+                "cpf_cnpj_e": {"non_null_pct": 90.0, "unicos": 65653},
+                "sit_desmat": {"non_null_pct": 100.0, "valores": ["D", "N"]},
+                "dat_embarg": {"non_null_pct": 100.0}
+            }
+        },
+        "ibama_silver": {
+            "arquivo": "data/02_silver/embargos_por_municipio_ano.parquet",
+            "registros": 18355,
+            "periodo": "1987-2026",
+            "municipios_21_23": 1249
+        },
+        "pib_silver": {
+            "arquivo": "data/02_silver/pib_vab_consolidado.parquet",
+            "registros": 77994,
+            "periodo": "2010-2023 (Dados válidos até 2021)",
+            "municipios": 5571
+        },
+        "pam_silver": {
+            "arquivo": "data/02_silver/pam_consolidado.parquet",
+            "registros": 27505,
+            "periodo": "2020-2024",
+            "municipios": 5237,
+            "nota": "Requer join via dim_municipio ou extração de chave_municipio"
+        },
+        "ppm_silver": {
+            "arquivo": "data/02_silver/ppm_consolidado.parquet",
+            "registros": 267264,
+            "periodo": "2021-2024",
+            "categorias": 12,
+            "municipios": 5567
+        },
+        "serie_historica": {
+            "arquivo": "data/02_silver/serie_historica_2020_2023.parquet",
+            "registros": 22284,
+            "periodo": "2020-2023",
+            "municipios": 5571,
+            "nota": "PIB zerado em 2022-2023 na série integrada; usar PAM/PPM separadamente"
+        }
+    },
+    
+    "etls_necessarias": [
+        {
+            "id": "6.1",
+            "nome": "Séries Temporais de Fiscalização",
+            "script": "etl_6_1_fiscalizacao_series.py",
+            "output": "data/03_gold/fiscalizacao_series_temporais.parquet",
+            "descricao": "Criar base analítica de embargos por município-ano com métricas de intensidade"
+        },
+        {
+            "id": "6.2",
+            "nome": "Impacto na Produção (Antes vs Depois)",
+            "script": "etl_6_2_impacto_producao.py",
+            "output": "data/03_gold/impacto_embargo_producao.parquet",
+            "descricao": "Medir mudança na PAM/PPM após embargos (2021-2024)"
+        },
+        {
+            "id": "6.3",
+            "nome": "Recorrência de Embargados",
+            "script": "etl_6_3_reincidentes.py",
+            "output": "data/03_gold/reincidentes_embargos.parquet",
+            "descricao": "Identificar reincidentes em crimes ambientais usando CPF/CNPJ"
+        },
+        {
+            "id": "6.4",
+            "nome": "Situação do Desmatamento",
+            "script": "etl_6_4_status_regularizacao.py",
+            "output": "data/03_gold/status_regularizacao_embargos.parquet",
+            "descricao": "Analisar status de regularização (D vs N) dos embargos"
+        }
+    ],
+    
+    "pre_requisitos": {
+        "sprint_1": "CONCLUÍDA",
+        "sprint_2": "CONCLUÍDA",
+        "dados_silver": "100% disponíveis (exceto PIB 2022+)",
+        "campos_criticos_ibama": "Validados (cpf_cnpj_e 90%, sit_desmat 100%, dat_embarg 100%)"
+    },
+    
+    "prontidao_geral": "100%",
+    "recomendacao": "PRONTO PARA INICIAR - Foco em PAM/PPM para impacto pós-2021"
+}

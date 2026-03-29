@@ -1,0 +1,15 @@
+{
+  "periodo_analise": "2020-2023",
+  "municipios_analisados": 5571,
+  "municipios_com_desmatamento": 123,
+  "ica_medio": 0.0011800756058564026,
+  "ica_mediana": 0.0005721272041596412,
+  "correlacao_pearson": -0.009876206712135103,
+  "p_valor_correlacao": 0.2017013019784289,
+  "interpretacao_correlacao": "Fraca/nula - desmatamento NÃO está associado a crescimento do VAB",
+  "overlap_top100_pct": 7.000000000000001,
+  "municipios_alto_desmat_baixo_vab": 34,
+  "r_squared_regressao": 0.06156081340200592,
+  "coef_desmatamento": 0.0,
+  "p_valor_desmatamento": null
+}

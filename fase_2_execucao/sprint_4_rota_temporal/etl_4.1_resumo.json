@@ -1,0 +1,42 @@
+{
+  "data_geracao": "2026-03-29T01:43:17.848843",
+  "tipo": "SIMULADO",
+  "nota": "Dados simulados baseados em padrões reais. Em produção, usar dados oficiais.",
+  "fontes": {
+    "PRODES": {
+      "arquivo": "data/01_bronze/prodes/prodes_desmatamento_anual.parquet",
+      "registros": 2793,
+      "periodo": "2018-2023",
+      "area_total_ha": 14176451,
+      "municipios": 803
+    },
+    "DETER": {
+      "arquivo": "data/01_bronze/deter/deter_alertas_diarios.parquet",
+      "registros": 22072,
+      "periodo": "2018-2023",
+      "area_total_ha": 2450426,
+      "municipios": 808
+    },
+    "MapBiomas Fogo": {
+      "arquivo": "data/01_bronze/mapbiomas_fogo/mapbiomas_fogo_ocorrencias.parquet",
+      "registros": 6441,
+      "periodo": "2018-2023",
+      "area_total_ha": 1442111,
+      "municipios": 3765
+    },
+    "TerraClass": {
+      "arquivo": "data/01_bronze/terra_class/terra_class_uso.parquet",
+      "registros": 11016,
+      "periodo": "2018-2022 (bienal)",
+      "municipios": 808,
+      "classes": [
+        "Vegetação Secundária",
+        "Pastagem",
+        "Mineração",
+        "Agricultura",
+        "Solo Exposto",
+        "Área Urbana"
+      ]
+    }
+  }
+}

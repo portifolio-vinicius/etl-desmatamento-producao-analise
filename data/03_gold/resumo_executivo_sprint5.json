@@ -1,0 +1,14 @@
+{
+    "total_exportado_usd": 676741927718.0,
+    "top_5_ufs_valor": {
+        "SP": 142896724480.0,
+        "RJ": 92512326359.0,
+        "MG": 82286139084.0,
+        "MT": 59803954270.0,
+        "PR": 48627449535.0
+    },
+    "correlacao_export_desmat": -0.0011967512799375998,
+    "china_share_soja": 0.7450348026736631,
+    "uf_mais_eficiente": "RJ",
+    "uf_menos_eficiente": "AC"
+}

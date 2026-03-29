@@ -1,0 +1,146 @@
+{
+  "data_validacao": "2026-03-29 01:29",
+  "camada_silver": {
+    "pam_consolidado": {
+      "linhas": 27505,
+      "colunas": 14,
+      "memoria_mb": 4.12,
+      "periodo_min": 2020,
+      "periodo_max": 2024,
+      "municipios_unicos": 5510
+    },
+    "pib_vab_consolidado": {
+      "linhas": 77994,
+      "colunas": 3,
+      "memoria_mb": 1.79,
+      "periodo_min": 2010,
+      "periodo_max": 2023,
+      "municipios_unicos": 5571
+    },
+    "ppm_consolidado": {
+      "linhas": 267264,
+      "colunas": 4,
+      "memoria_mb": 11.47,
+      "periodo_min": -1,
+      "periodo_max": 2024,
+      "municipios_unicos": 5568
+    },
+    "embargos_por_municipio_ano": {
+      "linhas": 18355,
+      "colunas": 5,
+      "memoria_mb": 0.7,
+      "periodo_min": 1987,
+      "periodo_max": 2026,
+      "municipios_unicos": 3769
+    },
+    "comex_por_uf_ano": {
+      "linhas": 689,
+      "colunas": 7,
+      "memoria_mb": 0.05,
+      "periodo_min": 2023,
+      "periodo_max": 2025,
+      "municipios_unicos": null
+    },
+    "dim_municipio": {
+      "linhas": 5510,
+      "colunas": 6,
+      "memoria_mb": 0.33,
+      "periodo_min": null,
+      "periodo_max": null,
+      "municipios_unicos": 1
+    },
+    "serie_historica_2020_2023": {
+      "linhas": 22284,
+      "colunas": 18,
+      "memoria_mb": 3.06,
+      "periodo_min": 2020,
+      "periodo_max": 2023,
+      "municipios_unicos": 5571
+    }
+  },
+  "camada_gold_sprint2": {
+    "ica_ranking": {
+      "linhas": 22284,
+      "colunas": 6,
+      "memoria_mb": 1.02
+    },
+    "correlacao_delta": {
+      "linhas": 2,
+      "colunas": 4,
+      "memoria_mb": 0.0
+    },
+    "eficiencia_atividade": {
+      "linhas": 22284,
+      "colunas": 7,
+      "memoria_mb": 1.19
+    },
+    "eficiencia_agricola_pam": {
+      "linhas": 27505,
+      "colunas": 7,
+      "memoria_mb": 1.84
+    },
+    "ranking_concentracao": {
+      "linhas": 5571,
+      "colunas": 6,
+      "memoria_mb": 0.26
+    },
+    "ranking_top100_desmatamento": {
+      "linhas": 100,
+      "colunas": 4,
+      "memoria_mb": 0.0
+    },
+    "ranking_top100_vab": {
+      "linhas": 100,
+      "colunas": 4,
+      "memoria_mb": 0.0
+    }
+  },
+  "validacao_qualidade": {
+    "embargos": {
+      "total_registros": 18355,
+      "registros_2020_2023": 2239,
+      "null_pct_area_desmatada": 0.0,
+      "null_pct_area_embargada": 0.0,
+      "area_desmatada_total_ha": 27840,
+      "area_embargada_total_ha": 1566646,
+      "municipios_com_embargos": 1386
+    },
+    "pib_vab": {
+      "total_registros": 77994,
+      "registros_2020_2023": 22284,
+      "null_pct_vab": 14.32,
+      "vab_total_mil_reais": 1025706034,
+      "vab_medio_mil_reais": 92074.15,
+      "municipios_com_vab": 5571
+    },
+    "serie_historica": {
+      "total_registros": 22284,
+      "colunas": 18,
+      "periodo_min": 2020,
+      "periodo_max": 2023,
+      "municipios_unicos": 5571
+    },
+    "integracao": {
+      "municipios_embargos": 1386,
+      "municipios_pib": 5571,
+      "intersecao": 1385,
+      "intersecao_pct": 24.86,
+      "apenas_embargos": 1,
+      "apenas_pib": 4186
+    }
+  },
+  "dados_pendentes": [
+    "PRODES (INPE) - corte raso anual",
+    "DETER (INPE) - alertas diários",
+    "MapBiomas Fogo - ocorrências de incêndio",
+    "TerraClass - uso pós-desmatamento"
+  ],
+  "recomendacao": "OPCAO_A_COMPLETA",
+  "periodo_analise": "2020-2023",
+  "municipios_integrados": 3769,
+  "qualidade_dados": {
+    "nulls_area_desmatada": 0,
+    "nulls_vab_agro": 0,
+    "chaves_consistentes": true
+  }
+}
