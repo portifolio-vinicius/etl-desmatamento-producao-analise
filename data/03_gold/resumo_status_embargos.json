@@ -1,0 +1,30 @@
+{
+    "distribuicao_geral": [
+        {
+            "situacao": "D",
+            "contagem": 55736,
+            "descricao": "Desmatamento / Degradação",
+            "pct": 62.91739100986612
+        },
+        {
+            "situacao": "N",
+            "contagem": 32850,
+            "descricao": "Não Desmatamento / Outros",
+            "pct": 37.08260899013388
+        }
+    ],
+    "por_ano_2020_2023": {
+        "D": {
+            "2020": 1841,
+            "2021": 2581,
+            "2022": 3614,
+            "2023": 5139
+        },
+        "N": {
+            "2020": 410,
+            "2021": 380,
+            "2022": 858,
+            "2023": 459
+        }
+    }
+}

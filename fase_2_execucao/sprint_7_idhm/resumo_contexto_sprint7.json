@@ -1,0 +1,75 @@
+{
+    "sprint": 7,
+    "titulo": "O Paradoxo Socioeconômico: IDHM e Desenvolvimento",
+    "status": "EM PLANEJAMENTO",
+    "data_analise": "2026-03-29",
+    
+    "objetivo_principal": "Verificar se o desmatamento e o crescimento do VAB agropecuário se traduzem em melhoria do IDHM e redução da pobreza nos municípios da Amazônia Legal",
+    
+    "perguntas_pesquisa": [
+        "Desmatar enriquece a população local (IDHM)?",
+        "Existe correlação entre crescimento do VAB Agro e redução da pobreza?",
+        "Quais municípios apresentam o paradoxo 'Alto VAB / Baixo IDHM'?",
+        "O desenvolvimento humano é retardado ou acelerado em zonas de expansão da fronteira agrícola?"
+    ],
+    
+    "fontes_necessarias": {
+        "idhm": {
+            "fonte": "Atlas Brasil (PNUD/IPEA/FJP)",
+            "status": "PENDENTE INGESTÃO",
+            "frequencia": "Quinquenal (1991, 2000, 2010, 2020)",
+            "tratamento_necessario": "Interpolação linear para anos intermediários (2011-2019, 2021-2023)"
+        },
+        "pib_per_capita": {
+            "fonte": "IBGE",
+            "status": "PENDENTE INGESTÃO",
+            "frequencia": "Anual",
+            "campos_chave": ["cod_ibge", "ano", "pib_per_capita"]
+        },
+        "pobreza": {
+            "fonte": "CadÚnico / IBGE",
+            "status": "PENDENTE INGESTÃO",
+            "frequencia": "Anual",
+            "campos_chave": ["cod_ibge", "ano", "percentual_pobreza"]
+        }
+    },
+    
+    "dados_silver_disponiveis": {
+        "vab_agro": "data/02_silver/pib_vab_consolidado.parquet",
+        "desmatamento": "data/02_silver/embargos_por_municipio_ano.parquet",
+        "municipios": "data/02_silver/dim_municipio.parquet"
+    },
+    
+    "etapas_etl": [
+        {
+            "id": "7.1",
+            "nome": "Ingestão e Interpolação IDHM",
+            "script": "etl_7_1_idhm_interpolacao.py",
+            "output": "data/02_silver/idhm_municipal_interpolado.parquet"
+        },
+        {
+            "id": "7.2",
+            "nome": "Ingestão Socioeconômica (PIB pc/Pobreza)",
+            "script": "etl_7_2_socioeconomico_consolidado.py",
+            "output": "data/02_silver/socioeconomico_consolidado.parquet"
+        }
+    ],
+    
+    "analises_gold": [
+        {
+            "id": "7.3",
+            "nome": "Correlação Desmatamento vs IDHM",
+            "script": "analise_7_3_correlacao_idhm.py",
+            "output": "data/03_gold/correlacao_idhm_desmatamento.parquet"
+        },
+        {
+            "id": "7.4",
+            "nome": "Tipologia Municipal (Quadrantes)",
+            "script": "analise_7_4_tipologia_quadrantes.py",
+            "output": "data/03_gold/tipologia_municipal_quadrantes.parquet"
+        }
+    ],
+    
+    "prontidao_infraestrutura": "90% (Camada Silver base disponível)",
+    "risco_critico": "Dados de IDHM 2020 podem não refletir mudanças pós-pandemia sem novas fontes de apoio."
+}

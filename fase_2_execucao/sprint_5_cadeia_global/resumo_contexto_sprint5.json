@@ -1,0 +1,106 @@
+{
+    "sprint": 5,
+    "titulo": "Cadeia Global: Da Floresta ao Mercado",
+    "status": "PRONTO PARA EXECUÇÃO",
+    "data_validacao": "2026-03-29",
+    
+    "objetivo_principal": "Cruzar dados de exportação de commodities com dados de desmatamento em nível estadual para responder à pergunta: 'Para onde vai a produção associada ao desmatamento?'",
+    
+    "perguntas_pesquisa": [
+        "Quais as UFs com maior exportação de commodities associadas ao desmatamento?",
+        "Qual o destino internacional das commodities provenientes de UFs com alto índice de desmatamento?",
+        "Existe correlação entre o aumento de exportação de soja/carne bovina e o aumento de embargos na UF?",
+        "Qual a eficiência ambiental da exportação (USD exportado por hectare desmatado) em cada estado?"
+    ],
+    
+    "periodo_analise": {
+        "inicio": 2023,
+        "fim": 2024,
+        "anos": 2,
+        "justificativa": "Dados de COMEX Bronze completos para 2023 e 2024; dados de 2025 são parciais"
+    },
+    
+    "dados_disponiveis": {
+        "comex_bronze": {
+            "arquivo": "data/01_bronze/comex/comex_stat/EXP_{2023,2024}.parquet",
+            "registros_2023": 1563659,
+            "ncms_unicos": 8014,
+            "paises_unicos": 243,
+            "campos_criticos": ["CO_ANO", "CO_NCM", "CO_PAIS", "SG_UF_NCM", "VL_FOB", "KG_LIQUIDO"]
+        },
+        "comex_silver": {
+            "arquivo": "data/02_silver/comex_por_uf_ano.parquet",
+            "registros": 689,
+            "ufs": 29,
+            "commodities": ["Açúcar", "Carne Bovina", "Café", "Celulose", "Milho", "Soja", "Madeira", "Outros"]
+        },
+        "ibama_silver": {
+            "arquivo": "data/02_silver/embargos_por_municipio_ano.parquet",
+            "registros": 18355,
+            "municipios": 3769,
+            "ufs": 27,
+            "periodo": "1987-2026"
+        },
+        "dim_municipio": {
+            "arquivo": "data/02_silver/dim_municipio.parquet",
+            "registros": 5570,
+            "campos": ["cod_ibge", "uf", "amazonia_legal", "regiao"],
+            "nota": "municipio_nome vazio, mas cod_ibge e uf completos"
+        }
+    },
+    
+    "etls_necessarias": [
+        {
+            "id": "5.1",
+            "nome": "Mapeamento NCM → Commodity",
+            "script": "01_etl_mapeamento_ncm.py",
+            "output": "data/02_silver/ncm_commodity_reference.parquet",
+            "descricao": "Criar tabela de referência manual para filtrar NCMs de interesse"
+        },
+        {
+            "id": "5.2",
+            "nome": "Tabela de Referência de Países",
+            "script": "02_etl_paises_referencia.py",
+            "output": "data/02_silver/pais_reference.parquet",
+            "descricao": "Mapear códigos numéricos de países para nomes legíveis"
+        },
+        {
+            "id": "5.3",
+            "nome": "Ranking de UFs Exportadoras",
+            "script": "03_analise_ranking_uf.py",
+            "output": "data/03_gold/ranking_uf_exportadora.parquet",
+            "descricao": "Agregar exportações por UF-commodity"
+        },
+        {
+            "id": "5.4",
+            "nome": "Overlap Exportação × Desmatamento",
+            "script": "04_analise_overlap_uf.py",
+            "output": "data/03_gold/uf_exportacao_vs_desmatamento.parquet",
+            "descricao": "Cruzar ranks de exportação com ranks de desmatamento/embargos"
+        },
+        {
+            "id": "5.5",
+            "nome": "Matriz de Destino (Países)",
+            "script": "05_analise_matriz_paises.py",
+            "output": "data/03_gold/matriz_destino_exportacao.parquet",
+            "descricao": "Identificar principais países compradores por commodity"
+        },
+        {
+            "id": "5.6",
+            "nome": "Eficiência Ambiental da Exportação",
+            "script": "06_analise_eficiencia_ambiental.py",
+            "output": "data/03_gold/eficiencia_ambiental_exportacao.parquet",
+            "descricao": "Cálculo da métrica USD/ha desmatado por UF"
+        }
+    ],
+    
+    "pre_requisitos": {
+        "sprint_1": "CONCLUÍDA",
+        "sprint_2": "CONCLUÍDA",
+        "dados_silver": "Disponíveis (COMEX e IBAMA)",
+        "limite_territorial": "Análise limitada ao nível UF devido à restrição do COMEX"
+    },
+    
+    "prontidao_geral": "100%",
+    "recomendacao": "PRONTO PARA INICIAR - Foco inicial em 5.1 e 5.2 para refinamento dos dados"
+}

@@ -1,0 +1,20 @@
+{
+    "periodo_analise": "2021-2023",
+    "municipios_com_embargos_periodo": 1249,
+    "total_embargos_periodo": 13031,
+    "area_total_embargada_ha": 1373123.89539102,
+    "impacto_producao": {
+        "municipios_analisados": 893,
+        "delta_bovinos_medio_pct": 3.7098784162521223,
+        "delta_vab_medio_pct": -100.0,
+        "conclusao_impacto": "Estabilidade/Aumento"
+    },
+    "reincidencia": {
+        "total_infratores_reincidentes": 9522,
+        "top_10_reincidentes_avg_embargos": 36.3,
+        "max_embargos_unico_cpf": 191
+    },
+    "status_desmatamento": {
+        "pct_direto_desmatamento": 62.91739100986612
+    }
+}
