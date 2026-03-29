@@ -43,7 +43,85 @@
       "Bash(try:)",
       "Bash(teste *)",
       "Bash(validos *)",
-      "Bash(except *)"
+      "Bash(except *)",
+      "Bash(python3 *)",
+      "Bash(rm *)",
+      "Bash(du *)"
     ]
-  }
+  },
+  "rules": {
+    "project_context": "SABADO-TE-ANALISE-DADOS - Pipeline de análise de desmatamento, economia e impacto socioambiental",
+    "architecture": "Bronze (Raw) → Silver (Clean) → Gold (Analytics)",
+    "current_sprint": "Sprint 1: ETL Silver Layer (6 ETLs municipais + 1 COMEX-UF)",
+    "data_sources": {
+      "PAM": "888K registros (2020-2024), chave: cod_ibge (7 dígitos)",
+      "PIB": "~78K registros (2010-2023), chave: cod_ibge (7 dígitos)",
+      "PPM": "12 categorias (2021-2024), chave: cod_ibge (7 dígitos)",
+      "IBAMA": "88K embargos (1987-2025), chave: cod_munici",
+      "COMEX": "1.6M registros (2023-2025), SEM município - apenas UF"
+    },
+    "critical_constraints": [
+      "NUNCA fazer join municipal com COMEX (apenas por UF)",
+      "SEMPRE usar BASE_DIR para caminhos absolutos",
+      "SEMPRE validar schema antes de transformar",
+      "SEMPRE exportar Parquet com compressão snappy",
+      "SEMPRE extrair cod_ibge via regex (\\d{7})",
+      "NUNCA pular validação de qualidade"
+    ],
+    "code_standards": {
+      "imports": "pandas, pyarrow, pathlib, re, tqdm, typing",
+      "schema": "PyArrow schema definido para exportação",
+      "validation": "Calcular nulos, únicos, min, max, série temporal",
+      "pythonic_patterns": {
+        "early_return": "Trate erros primeiro, sem else desnecessários",
+        "solid": "Use Protocol para extensibilidade, funções com responsabilidade única",
+        "naming": "Variáveis booleanas descritivas (eh_, tem_, pode_)",
+        "type_hints": "Sempre declare tipos (Optional, List, Dict, Union)",
+        "function_names": "Verbos no infinitivo + snake_case (validar_, calcular_, extrair_)",
+        "decomposition": "Funções com até 15 linhas, decomponha se necessário",
+        "predicate_variables": "Nomeie lógica complexa com variáveis de predicado",
+        "function_dict": "Use dicionário de funções ao invés de if/elif/else"
+      }
+    }
+  },
+  "agents": {
+    "etl-builder": "Criar/manter scripts ETL seguindo padrões do projeto",
+    "data-quality": "Validar qualidade dos dados (nulos, schema, série)",
+    "spatial-analysis": "Processar dados geoespaciais (GeoParquet, buffers, joins)",
+    "analytics": "Calcular métricas Gold (ICA, correlações, regressões)",
+    "documentation": "Atualizar docs e gerar resumos de ETL",
+    "code-review": "Revisar código (padrões, performance, segurança)",
+    "pipeline-orchestrator": "Gerenciar dependências e execução do pipeline"
+  },
+  "agent_behavior": {
+    "descricao": "Comportamento automático dos agents - SEMPRE seguir estas regras",
+    "regras_gerais": [
+      "NUNCA espere o usuário digitar o comando do agent",
+      "SEMPRE identifique qual agent é necessário baseado no contexto",
+      "SEMPRE aplique automaticamente as regras do agent apropriado",
+      "SEMPRE gere código/documentação seguindo padrões",
+      "SEMPRE valide com data-quality após transformações",
+      "SEMPRE documente após concluir tarefas"
+    ],
+    "exemplo_comportamento": {
+      "usuario_diz": "Preciso criar a ETL de PAM para a camada Silver",
+      "qwen_code_deve": [
+        "1. Reconhecer que precisa usar ETL Builder Agent",
+        "2. Automaticamente aplicar regras do etl-builder",
+        "3. Gerar código com BASE_DIR, schema PyArrow, snappy",
+        "4. Incluir validações de data quality no código",
+        "5. Sugerir próximos passos (executar, validar, documentar)",
+        "NÃO: Pedir para usuário digitar /etl create"
+      ]
+    }
+  },
+  "documentation_paths": {
+    "agents_guide": ".qwen/AGENTS.md",
+    "rules": ".qwen/rules.md",
+    "pythonic_patterns": ".qwen/PADROES_PYTHONICOS.md",
+    "examples": ".qwen/EXEMPLOS_AGENTS.md",
+    "common_patterns": ".qwen/skills/_COMMON_PATTERNS.md",
+    "index": ".qwen/INDICE.md"
+  },
+  "$version": 3
 }
