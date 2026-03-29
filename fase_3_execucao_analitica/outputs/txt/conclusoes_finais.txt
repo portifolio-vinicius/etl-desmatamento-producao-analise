@@ -1,0 +1,17 @@
+# SUMÁRIO EXECUTIVO FINAL - PROJETO ANÁLISE DE DESMATAMENTO
+Data: 29/03/2026 15:26
+
+1. EFICIÊNCIA ECONÔMICA:
+   - Hipótese Rejeitada: Desmatamento não gera crescimento de VAB (Correlação -0.0099).
+   - ICA Médio: Reflete a ineficiência ambiental por unidade de riqueza.
+
+2. RISCO DE CADEIA E FISCALIZAÇÃO:
+   - 9.522 infratores reincidentes identificados.
+   - Embargos sozinhos não freiam a pecuária (crescimento de rebanho pós-embargo).
+
+3. IMPACTO SOCIAL:
+   - Identificado paradoxo de desenvolvimento (Alto Desmatamento / Baixo IDHM).
+
+RECOMENDAÇÃO ESTRATÉGICA: Transição do modelo de expansão territorial para o 
+modelo de intensificação produtiva em áreas consolidadas, utilizando o 
+Compliance Risk Score para segregação de mercado.

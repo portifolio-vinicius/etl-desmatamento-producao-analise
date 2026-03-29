@@ -606,51 +606,37 @@ Para reduzir o risco de gargalos, especialmente com bases espaciais e séries te
 
 ---
 
-## Fase 3: Detalhamento Metodológico (Atualizado 28/03/2026)
+## Fase 3: Detalhamento Metodológico (Revisão Ágil - Baseada em Dados Validados)
 
-> **Nota:** A metodologia abaixo será implementada a partir do Sprint 2. Os dados necessários já estão disponíveis na camada Bronze (Sprint 0 ✅) e em processamento na Silver (Sprint 1 🔄).
+> **Nota Estratégica:** Esta metodologia foi ajustada após a validação empírica das primeiras sprints (Sprints 2, 5 e 6 - Camada Gold). O modelo de execução agora prioriza **Agilidade e Entrega Contínua de Valor**, transformando descobertas analíticas em produtos de dados acionáveis ao fim de cada ciclo.
 
-### A. Eficiência Econômica e o "Custo Ambiental"
-*   **Cálculo do ICA:**
-    $$ICA_{i} = \frac{Area\_Embargada_{i} (ha)}{VAB\_Agro_{i} (R\$ mil)}$$
-*   **Interpretação:** hectares embargados por R$ 1.000 de VAB agropecuário
-*   **Pecuária vs Agricultura:**
-    - Pecuária: `cabeças_bovinas / area_embargada_ha`
-    - Agricultura: `producao_toneladas / area_embargada_ha`
-*   **Dados Disponíveis:** 
-    - ✅ PIB (pib_vab_agro) - 2010-2023, R$ mil
-    - ✅ PAM (área plantada/colhida/produção) - 2020-2024, 0% nulls
-    - ✅ PPM (efetivo rebanhos) - 2021-2024, bovinos=238M (2024)
-    - ✅ IBAMA (área embargada) - 88.586 registros, 3.769 municípios
+### Epic 1: A Falácia da Eficiência Econômica (Sprint 2 - Validado)
+*   **A Descoberta:** O Índice de Custo Ambiental (ICA médio de 0.0011) e a correlação nula (-0.009) provam empiricamente que desmatamento não gera crescimento do VAB. Apenas 7% de sobreposição existe entre os maiores desmatadores e os maiores PIBs.
+*   **Metodologia Ágil:**
+    - **Iteração 1:** Automatizar o pipeline de cálculo do ICA com novos dados anuais do PAM/PIB.
+    - **Iteração 2:** Monitoramento focado na "Watchlist" dos 34 municípios críticos (alto desmatamento, baixo VAB) para subsidiar direcionamento de políticas públicas.
+    - **Entrega de Valor:** *Dashboard executivo* validando a ineficiência econômica do desmatamento para fundos de investimento ESG e formuladores de políticas.
 
-### B. Dinâmica Espacial e Efeito Vazamento (Spillover)
-*   **Análise UCs:** Uso de `buffer()` e `sjoin` para comparar densidades de desmatamento.
-*   **Rota Temporal:** Sequência: DETER (alerta) → Fogo → PRODES (corte) → TerraClass (uso)
-*   **Dados Disponíveis:** 
-    - ✅ IBAMA (geoparquet com 88.586 embargos)
-    - ⏳ PRODES/DETER (pendente ingestão - INPE)
-    - ⏳ MapBiomas Fogo (pendente)
-    - ⏳ TerraClass (pendente)
+### Epic 2: Cadeia de Suprimentos e o Filtro Global (Sprint 5 - Em Iteração)
+*   **A Descoberta:** Não há correlação direta (-0.0011) entre volume exportado por UF e desmatamento local, mas a dependência de um único player (China = 74% da compra de Soja) cria risco sistêmico. Estados do Sudeste concentram eficiência (alto valor exportado/baixo desmate), enquanto alguns estados amazônicos exportam "ineficiência".
+*   **Metodologia Ágil:**
+    - **Iteração 1:** Consolidar a rastreabilidade em nível estadual (NCM x UF).
+    - **Iteração 2:** Busca ativa por proxies para descer a análise ao nível municipal (ex: cruzamento com CAR, GTA e dados do SEFAZ).
+    - **Entrega de Valor:** *Matriz de Risco de Exportação* para tradings e compradores internacionais evitarem "commodities contaminadas".
 
-### C. Cadeia de Suprimentos e Mercado Global
-*   **Rastreio:** Filtro NCM no Comex Stat cruzado com rankings de desmatamento.
-*   **Fiscalização:** Avaliação de quebras estruturais na produção após picos de embargos.
-*   **Dados Disponíveis:** 
-    - ✅ COMEX (1,6M exportações NCM, 2023-2025)
-    - ✅ IBAMA (embargos 1987-2025)
-*   **⚠️ Limitação Crítica:** COMEX não possui código municipal, apenas UF (`SG_UF_NCM`)
-    - Rastreio possível apenas no nível **estadual**
-    - Para rastreio municipal, seriam necessários:
-      - Nota Fiscal Eletrônica (SEFAZ)
-      - Guia de Trânsito Animal (GTA)
-      - Cadastro Ambiental Rural (CAR)
+### Epic 3: O Peso (e a Falha) da Fiscalização (Sprint 6 - Validado)
+*   **A Descoberta:** O modelo atual de embargos não freia a produção. Observamos um aumento de 3.7% no rebanho bovino médio mesmo nos municípios mais embargados. A reincidência é estrutural: 9.522 infratores são contumazes (um único CPF concentra 191 embargos). 62.9% dos casos atrelam-se diretamente a desmatamento ('D').
+*   **Metodologia Ágil:**
+    - **Iteração 1:** Desenvolver um *Score de Reincidência* por CPF/CNPJ para isolar os "Desmatadores Profissionais".
+    - **Iteração 2:** Modelagem preditiva ou investigação de "laranjas" e arrendamentos que explicam o crescimento produtivo pós-embargo.
+    - **Entrega de Valor:** *Lista de Risco/Score* (formato API ou tabela) pronta para consumo de bancos (trava de crédito) e frigoríficos (compliance de compra).
 
-### D. O Paradoxo do Desenvolvimento Social
-*   **Correlação:** Join triplo para evidenciar se o PIB Agro reflete no IDHM local.
-*   **Dados Disponíveis:** 
-    - ✅ PIB/PAM/PPM (municipal, 2020-2024)
-    - ⏳ IDHM (pendente ingestão - IPEA/IBGE, quinquenal)
-    - ⏳ PIB per capita municipal (pendente)
+### Epic 4: Dinâmica Espacial e Paradoxo Social (Sprints 3 e 7 - Backlog Ágil)
+*   **A Hipótese:** O desmatamento, além de falhar na geração de riqueza produtiva sustentável, pode deprimir o IDHM local a longo prazo (dinâmica do "boom e colapso").
+*   **Metodologia Ágil:**
+    - **Iteração 1:** Unificar geometrias (GeoParquet) dos embargos para mapear o *Spillover* (vazamento) no entorno de Unidades de Conservação e municípios vizinhos.
+    - **Iteração 2:** Cruzar a tipologia municipal (IDHM vs Desmatamento) organizando os dados em quadrantes de risco social.
+    - **Entrega de Valor:** *Mapa Interativo de Vulnerabilidade Socioambiental* para orientar reportagens investigativas e alocação de recursos de ONGs.
 
 ---
 

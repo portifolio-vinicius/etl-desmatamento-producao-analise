@@ -117,7 +117,7 @@
 ## 📂 Estrutura de Diretórios
 
 ```
-fase_2_execucao/
+fase_3_execucao_analitica/
 └── sprint_2_gold_mvp/
     ├── sprint2_mvp_economico.py       # Script principal da Sprint 2
     ├── sprint2_mvp_economico.ipynb    # Notebook da Sprint 2
@@ -145,10 +145,10 @@ data/
 source venv/bin/activate
 
 # Executar Sprint 2
-python fase_2_execucao/sprint_2_gold_mvp/sprint2_mvp_economico.py
+python fase_3_execucao_analitica/sprint_2_gold_mvp/sprint2_mvp_economico.py
 
 # Gerar visualizações
-python fase_2_execucao/sprint_2_gold_mvp/sprint2_visualizacoes.py
+python fase_3_execucao_analitica/sprint_2_gold_mvp/sprint2_visualizacoes.py
 ```
 
 ---
