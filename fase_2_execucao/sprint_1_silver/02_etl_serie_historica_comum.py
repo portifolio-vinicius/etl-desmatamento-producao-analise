@@ -20,7 +20,17 @@ import pyarrow.parquet as pq
 from pathlib import Path
 
 # Configurar caminhos
-BASE_DIR = Path('/home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS')
+def _repo_root() -> Path:
+    p = Path(__file__).resolve()
+    for d in (p.parent, *p.parents):
+        if (d / "requirements.txt").exists():
+            return d
+    raise RuntimeError(
+        "requirements.txt não encontrado. Execute a partir do clone do repositório."
+    )
+
+
+BASE_DIR = _repo_root()
 PAM_SILVER = BASE_DIR / 'data/02_silver/pam_consolidado.parquet'
 PIB_SILVER = BASE_DIR / 'data/02_silver/pib_vab_consolidado.parquet'
 PPM_SILVER = BASE_DIR / 'data/02_silver/ppm_consolidado.parquet'
