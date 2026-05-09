@@ -21,7 +21,17 @@ from pathlib import Path
 import requests
 
 # Configurar caminhos
-BASE_DIR = Path('/home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS')
+def _repo_root() -> Path:
+    p = Path(__file__).resolve()
+    for d in (p.parent, *p.parents):
+        if (d / "requirements.txt").exists():
+            return d
+    raise RuntimeError(
+        "requirements.txt não encontrado. Execute a partir do clone do repositório."
+    )
+
+
+BASE_DIR = _repo_root()
 PAM_SILVER = BASE_DIR / 'data/02_silver/pam_consolidado.parquet'
 IBAMA_SILVER = BASE_DIR / 'data/02_silver/embargos_por_municipio_ano.parquet'
 DIMENSAO_SILVER_DIR = BASE_DIR / 'data/02_silver'
@@ -58,22 +68,46 @@ print(f"Total de municípios únicos coletados (PAM): {len(municipios_unicos)}")
 # ## Integração com API IBGE
 
 # %%
+def _uf_regiao_do_municipio(m: dict) -> tuple[str, str]:
+    """Extrai sigla da UF e nome da macrorregião; API pode omitir microrregiao."""
+    micro = m.get("microrregiao")
+    if micro:
+        uf = micro.get("mesorregiao", {}).get("UF") or {}
+        sigla = uf.get("sigla")
+        regiao = (uf.get("regiao") or {}).get("nome")
+        if sigla and regiao:
+            return sigla, regiao
+
+    ri = m.get("regiao-imediata") or {}
+    uf = ri.get("regiao-intermediaria", {}).get("UF") or {}
+    sigla = uf.get("sigla")
+    regiao = (uf.get("regiao") or {}).get("nome")
+    if sigla and regiao:
+        return sigla, regiao
+
+    raise ValueError(
+        f"Município id={m.get('id')} nome={m.get('nome')!r}: sem UF via microrregiao ou regiao-imediata"
+    )
+
+
 def buscar_municipios_ibge():
     """Busca lista completa de municípios da API do IBGE."""
     url = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
-    response = requests.get(url)
+    response = requests.get(url, timeout=120)
     if response.status_code == 200:
         dados = response.json()
-        df = pd.DataFrame([
-            {
-                'cod_ibge': int(m['id']),
-                'municipio': m['nome'],
-                'uf': m['microrregiao']['mesorregiao']['UF']['sigla'],
-                'regiao': m['microrregiao']['mesorregiao']['UF']['regiao']['nome']
-            }
-            for m in dados
-        ])
-        return df
+        rows = []
+        for m in dados:
+            uf_sigla, regiao_nome = _uf_regiao_do_municipio(m)
+            rows.append(
+                {
+                    "cod_ibge": int(m["id"]),
+                    "municipio": m["nome"],
+                    "uf": uf_sigla,
+                    "regiao": regiao_nome,
+                }
+            )
+        return pd.DataFrame(rows)
     return None
 
 print("\n🌐 Consultando API do IBGE...")
