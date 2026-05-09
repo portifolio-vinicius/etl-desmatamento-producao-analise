@@ -53,13 +53,30 @@ print()
 # FUNÇÕES AUXILIARES
 # =============================================================================
 
+# UFs da Amazônia Legal (mesmo critério usado em generate_*_simulado)
+_UFS_AMAZONIA_LEGAL = frozenset(['AC', 'AM', 'AP', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO'])
+
+
 def load_municipios_reference():
-    """Carregar tabela de municípios de referência da camada Silver"""
+    """Carregar tabela de municípios de referência da camada Silver."""
     dim_path = SILVER_DIR / 'dim_municipio.parquet'
-    if dim_path.exists():
-        df = pd.read_parquet(dim_path)
-        return df[['cod_ibge', 'municipio', 'uf', 'amazonia_legal']].copy()
-    return None
+    if not dim_path.exists():
+        return None
+    df = pd.read_parquet(dim_path)
+    required = ['cod_ibge', 'municipio', 'uf']
+    missing = [c for c in required if c not in df.columns]
+    if missing:
+        raise ValueError(
+            f"dim_municipio.parquet sem colunas obrigatórias {missing}. "
+            f"Colunas atuais: {list(df.columns)}"
+        )
+    out = df[required].copy()
+    if 'amazonia_legal' in df.columns:
+        out['amazonia_legal'] = df['amazonia_legal'].astype(bool)
+    else:
+        # ETL 1.6 (API IBGE) não grava esta coluna; derivar pela UF
+        out['amazonia_legal'] = out['uf'].isin(_UFS_AMAZONIA_LEGAL)
+    return out
 
 
 def generate_prodes_simulado(municipios_ref, periodo=(2018, 2023)):
@@ -76,9 +93,7 @@ def generate_prodes_simulado(municipios_ref, periodo=(2018, 2023)):
     if 'amazonia_legal' in municipios_ref.columns:
         amazonia_mun = municipios_ref[municipios_ref['amazonia_legal'] == True]
     else:
-        # Filtro por UF da Amazônia Legal
-        uf_amazonia = ['AC', 'AM', 'AP', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO']
-        amazonia_mun = municipios_ref[municipios_ref['uf'].isin(uf_amazonia)]
+        amazonia_mun = municipios_ref[municipios_ref['uf'].isin(_UFS_AMAZONIA_LEGAL)]
     
     # Converter cod_ibge para inteiro se necessário
     amazonia_mun = amazonia_mun.copy()
@@ -146,8 +161,7 @@ def generate_deter_simulado(municipios_ref, periodo=(2018, 2023)):
     if 'amazonia_legal' in municipios_ref.columns:
         amazonia_mun = municipios_ref[municipios_ref['amazonia_legal'] == True]
     else:
-        uf_amazonia = ['AC', 'AM', 'AP', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO']
-        amazonia_mun = municipios_ref[municipios_ref['uf'].isin(uf_amazonia)]
+        amazonia_mun = municipios_ref[municipios_ref['uf'].isin(_UFS_AMAZONIA_LEGAL)]
     
     # Converter cod_ibge para inteiro
     amazonia_mun = amazonia_mun.copy()
@@ -291,8 +305,7 @@ def generate_terra_class_simulado(municipios_ref, periodo=(2018, 2023)):
     if 'amazonia_legal' in municipios_ref.columns:
         amazonia_mun = municipios_ref[municipios_ref['amazonia_legal'] == True]
     else:
-        uf_amazonia = ['AC', 'AM', 'AP', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO']
-        amazonia_mun = municipios_ref[municipios_ref['uf'].isin(uf_amazonia)]
+        amazonia_mun = municipios_ref[municipios_ref['uf'].isin(_UFS_AMAZONIA_LEGAL)]
     
     # Converter cod_ibge para inteiro
     amazonia_mun = amazonia_mun.copy()
