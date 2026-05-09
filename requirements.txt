@@ -8,6 +8,7 @@ matplotlib
 seaborn
 scipy
 scikit-learn
+statsmodels
 jupyter
 ipykernel
 python-dotenv
