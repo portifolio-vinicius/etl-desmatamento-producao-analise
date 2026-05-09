@@ -36,8 +36,8 @@ TIMELINE_FILE = GOLD_DIR / 'temporal' / 'timeline_degradacao.parquet'
 LATENCIA_FILE = GOLD_DIR / 'temporal' / 'latencia_alerta_corte.parquet'
 RECORRENCIA_FILE = GOLD_DIR / 'temporal' / 'recorrencia_alertas.parquet'
 
-# Criar diretório de saída
-GOLD_DIR / 'temporal'.mkdir(parents=True, exist_ok=True)
+# Criar diretório de saída (parênteses: / antes de .mkdir)
+(GOLD_DIR / 'temporal').mkdir(parents=True, exist_ok=True)
 
 print("=" * 80)
 print("ETL 4.2: CONSTRUÇÃO DA TIMELINE DE DEGRADAÇÃO")
