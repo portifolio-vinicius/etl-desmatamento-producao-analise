@@ -1,7 +1,28 @@
+"""
+Dashboard Streamlit — não execute com `python app_dashboard.py`.
+Na raiz do repositório: streamlit run fase_2_execucao/sprint_8_produtizacao/app_dashboard.py
+"""
+import sys
+
+from streamlit.runtime.scriptrunner_utils.script_run_context import get_script_run_ctx
+
+if get_script_run_ctx(suppress_warning=True) is None:
+    print(
+        "\nEste arquivo é um app Streamlit. Use o comando abaixo na raiz do repositório:\n\n"
+        "  streamlit run fase_2_execucao/sprint_8_produtizacao/app_dashboard.py\n",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+
 import streamlit as st
 import pandas as pd
-import os
 import json
+from pathlib import Path
+
+# Caminhos relativos à raiz do clone (streamlit costuma ser iniciado de lá)
+_ROOT = Path(__file__).resolve().parents[2]
+_GOLD = _ROOT / "data" / "03_gold"
+_VIZ = _GOLD / "visualizacoes"
 
 # Configuração da página
 st.set_page_config(
@@ -27,14 +48,14 @@ st.markdown("""
 
 @st.cache_data
 def load_data():
-    # Caminhos para os arquivos Gold
-    df_ica = pd.read_parquet('data/03_gold/ica_ranking.parquet')
-    df_fiscal = pd.read_parquet('data/03_gold/fiscalizacao_series_temporais.parquet')
-    df_reincidentes = pd.read_parquet('data/03_gold/reincidentes_embargos.parquet')
-    df_impacto = pd.read_parquet('data/03_gold/impacto_embargo_producao.parquet')
-    df_alerta = pd.read_parquet('data/03_gold/lista_alerta_compliance.parquet')
-    
-    with open('data/03_gold/resumo_sprint6.json', 'r') as f:
+    # Caminhos para os arquivos Gold (sempre relativos à raiz do repositório)
+    df_ica = pd.read_parquet(_GOLD / "ica_ranking.parquet")
+    df_fiscal = pd.read_parquet(_GOLD / "fiscalizacao_series_temporais.parquet")
+    df_reincidentes = pd.read_parquet(_GOLD / "reincidentes_embargos.parquet")
+    df_impacto = pd.read_parquet(_GOLD / "impacto_embargo_producao.parquet")
+    df_alerta = pd.read_parquet(_GOLD / "lista_alerta_compliance.parquet")
+
+    with open(_GOLD / "resumo_sprint6.json", "r", encoding="utf-8") as f:
         resumo_sprint6 = json.load(f)
         
     return df_ica, df_fiscal, df_reincidentes, df_impacto, df_alerta, resumo_sprint6
@@ -82,8 +103,8 @@ if page == "1. Visão Geral (KPIs)":
     - **Foco Territorial:** {resumo6['status_desmatamento']['pct_direto_desmatamento']:.1f}% dos embargos são diretamente ligados à degradação florestal.
     """)
     
-    if os.path.exists('data/03_gold/visualizacoes/resumo_visual.png'):
-        st.image('data/03_gold/visualizacoes/resumo_visual.png', caption="Storytelling Visual do Projeto")
+    if (_VIZ / "resumo_visual.png").exists():
+        st.image(str(_VIZ / "resumo_visual.png"), caption="Storytelling Visual do Projeto")
 
 # ---------------------------------------------------------
 # Página 2: O Paradoxo do Lucro
@@ -99,8 +120,8 @@ elif page == "2. O Paradoxo do Lucro (Eficiência)":
     
     with col1:
         st.subheader("Distribuição do ICA por Município")
-        if os.path.exists('data/03_gold/visualizacoes/distribuicao_ica.png'):
-            st.image('data/03_gold/visualizacoes/distribuicao_ica.png')
+        if (_VIZ / "distribuicao_ica.png").exists():
+            st.image(str(_VIZ / "distribuicao_ica.png"))
     
     with col2:
         st.subheader("Top 10 Municípios Ineficientes")
@@ -148,13 +169,13 @@ elif page == "4. Impacto na Produção (Análise Temporal)":
     
     with col1:
         st.subheader("Impacto no VAB e Bovinos (Boxplot)")
-        if os.path.exists('data/03_gold/visualizacoes/impacto_producao_boxplot.png'):
-            st.image('data/03_gold/visualizacoes/impacto_producao_boxplot.png')
+        if (_VIZ / "impacto_producao_boxplot.png").exists():
+            st.image(str(_VIZ / "impacto_producao_boxplot.png"))
             
     with col2:
         st.subheader("Distribuição do Δ Bovinos (%)")
-        if os.path.exists('data/03_gold/visualizacoes/delta_bovinos_histogram.png'):
-            st.image('data/03_gold/visualizacoes/delta_bovinos_histogram.png')
+        if (_VIZ / "delta_bovinos_histogram.png").exists():
+            st.image(str(_VIZ / "delta_bovinos_histogram.png"))
 
     st.subheader("Análise por Município (Impacto Consolidado)")
     st.dataframe(df_impacto.sort_values(by='delta_bovinos_pct', ascending=False), use_container_width=True)
