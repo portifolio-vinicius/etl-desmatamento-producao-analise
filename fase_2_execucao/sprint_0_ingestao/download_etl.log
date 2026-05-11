@@ -55,3 +55,19 @@
 2026-03-15 16:31:47,902 - ERROR - Erro ao baixar https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2023.csv: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)>
 2026-03-15 16:31:47,902 - INFO - [comex_stat_2023] Concluído com Sucesso! Linhas carregadas: 0
 2026-03-15 16:31:47,902 - INFO - ================ Processo de execução de lote finalizado ================
+2026-04-11 09:27:43,815 - INFO - ==================================================
+2026-04-11 09:27:43,815 - INFO - Iniciando Execução. Datasets mapeados: ['pam', 'ppm_bovinos', 'pib_vab_agro', 'ibama_embargos', 'comex_stat_2023']
+2026-04-11 09:27:43,815 - INFO - ==================================================
+2026-04-11 09:27:43,816 - INFO - ⏭️ pam ignorado pois já existem dados em ../../data/01_bronze/pam.
+2026-04-11 09:27:43,817 - INFO - [ppm_bovinos] Iniciando extração.
+2026-04-11 09:28:32,695 - INFO - [ppm_bovinos] Concluído com Sucesso! Linhas carregadas: 77938
+2026-04-11 09:28:32,695 - INFO - [pib_vab_agro] Iniciando extração.
+2026-04-11 09:29:12,617 - INFO - [pib_vab_agro] Concluído com Sucesso! Linhas carregadas: 77980
+2026-04-11 09:29:12,617 - INFO - [ibama_embargos] Iniciando extração.
+2026-04-11 09:29:12,617 - INFO - Fazendo request restrito: https://pamgia.ibama.gov.br/geoservicos/arquivos/adm_embargo_ibama_a.shp.zip
+2026-04-11 09:29:16,004 - ERROR - Falha gravíssima SHP: 401 Client Error: Unauthorized for url: https://pamgia.ibama.gov.br/geoservicos/arquivos/adm_embargo_ibama_a.shp.zip
+2026-04-11 09:29:16,007 - INFO - [ibama_embargos] Concluído com Sucesso! Linhas carregadas: 0
+2026-04-11 09:29:16,008 - INFO - [comex_stat_2023] Iniciando extração.
+2026-04-11 09:29:16,008 - INFO - Tentando baixar direto da URL: https://balanca.economia.gov.br/balanca/bd/comexstat-bd/ncm/EXP_2023.csv
+2026-04-11 09:29:22,218 - INFO - [comex_stat_2023] Concluído com Sucesso! Linhas carregadas: 1563659
+2026-04-11 09:29:22,218 - INFO - ================ Processo de execução de lote finalizado ================
