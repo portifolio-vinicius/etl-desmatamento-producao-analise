@@ -1,0 +1,18 @@
+{
+  "data_processamento": "2026-04-11T09:52:37.025365",
+  "timeline": {
+    "registros": 9643,
+    "municipios": 3842,
+    "arquivo": "data/03_gold/temporal/timeline_degradacao.parquet"
+  },
+  "latencia": {
+    "municipios": 804,
+    "latencia_media_anos": 0.71,
+    "arquivo": "data/03_gold/temporal/latencia_alerta_corte.parquet"
+  },
+  "recorrencia": {
+    "municipios": 809,
+    "recorrencia_alta": 26,
+    "arquivo": "data/03_gold/temporal/recorrencia_alertas.parquet"
+  }
+}
