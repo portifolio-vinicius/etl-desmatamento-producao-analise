@@ -46,7 +46,7 @@ Esta sprint tem como objetivo cruzar dados de exportação de commodities com da
 ## Como Executar
 
 ```bash
-cd /home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS
+cd /caminho/do/clone/etl-desmatamento-producao-analise
 source venv/bin/activate
 
 # Executar scripts em sequência (após implementação)

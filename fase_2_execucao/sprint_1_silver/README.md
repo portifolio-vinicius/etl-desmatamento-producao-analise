@@ -229,7 +229,7 @@ Série histórica comum disponível: **2020-2023** (4 anos)
 ## Como Executar
 
 ```bash
-cd /home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS
+cd /caminho/do/clone/etl-desmatamento-producao-analise
 source venv/bin/activate
 
 # Executar todas as ETLs em sequência
