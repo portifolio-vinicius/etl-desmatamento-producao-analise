@@ -29,7 +29,17 @@ import pyarrow.parquet as pq
 from pathlib import Path
 
 # Configurar caminhos
-BASE_DIR = Path('/home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS')
+def _repo_root() -> Path:
+    p = Path(__file__).resolve()
+    for d in (p.parent, *p.parents):
+        if (d / "requirements.txt").exists():
+            return d
+    raise RuntimeError(
+        "requirements.txt não encontrado. Execute a partir do clone do repositório."
+    )
+
+
+BASE_DIR = _repo_root()
 IBAMA_BRONZE_DIR = BASE_DIR / 'data/01_bronze/ibama/ibama_embargos'
 IBAMA_SILVER_DIR = BASE_DIR / 'data/02_silver'
 

@@ -26,7 +26,17 @@ import re
 from tqdm import tqdm
 
 # Configurar caminhos
-BASE_DIR = Path('/home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS')
+def _repo_root() -> Path:
+    p = Path(__file__).resolve()
+    for d in (p.parent, *p.parents):
+        if (d / "requirements.txt").exists():
+            return d
+    raise RuntimeError(
+        "requirements.txt não encontrado. Execute a partir do clone do repositório."
+    )
+
+
+BASE_DIR = _repo_root()
 PAM_BRONZE_DIR = BASE_DIR / 'data/01_bronze/pam/pam/D1C=Município (Código)'
 PAM_SILVER_DIR = BASE_DIR / 'data/02_silver'
 
