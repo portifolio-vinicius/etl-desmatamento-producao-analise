@@ -2,6 +2,10 @@ import pandas as pd
 import numpy as np
 import os
 
+# UFs da Amazônia Legal (dim vinda da API IBGE não traz a coluna amazonia_legal)
+_UFS_AMAZONIA_LEGAL = frozenset(['AC', 'AM', 'AP', 'MA', 'MT', 'PA', 'RO', 'RR', 'TO'])
+
+
 def etl_6_1_fiscalizacao_series():
     print("Iniciando ETL 6.1: Séries Temporais de Fiscalização...")
     
@@ -15,7 +19,14 @@ def etl_6_1_fiscalizacao_series():
 
     df_emb = pd.read_parquet(emb_path)
     df_dim = pd.read_parquet(dim_path)
-    
+
+    if 'amazonia_legal' not in df_dim.columns or 'regiao' not in df_dim.columns:
+        df_dim = df_dim.copy()
+        if 'amazonia_legal' not in df_dim.columns:
+            df_dim['amazonia_legal'] = df_dim['uf'].isin(_UFS_AMAZONIA_LEGAL)
+        if 'regiao' not in df_dim.columns:
+            df_dim['regiao'] = pd.NA
+
     # 2. Filtrar anos de análise (2021-2023)
     df_emb = df_emb[df_emb['ano'].isin([2021, 2022, 2023])]
     
