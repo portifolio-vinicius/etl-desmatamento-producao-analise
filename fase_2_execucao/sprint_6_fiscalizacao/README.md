@@ -263,7 +263,7 @@ data/
 
 ```bash
 # 1. Ativar ambiente virtual
-cd /home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS
+cd /caminho/do/clone/etl-desmatamento-producao-analise
 source venv/bin/activate
 
 # 2. Validar dados de entrada
