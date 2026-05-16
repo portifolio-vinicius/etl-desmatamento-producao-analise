@@ -17,7 +17,17 @@ from pathlib import Path
 import os
 
 # Configurações de diretórios
-BASE_DIR = Path('/home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS')
+def _repo_root() -> Path:
+    p = Path(__file__).resolve()
+    for d in (p.parent, *p.parents):
+        if (d / "requirements.txt").exists():
+            return d
+    raise RuntimeError(
+        "requirements.txt não encontrado. Execute a partir do clone do repositório."
+    )
+
+
+BASE_DIR = _repo_root()
 GOLD_DIR = BASE_DIR / 'data/03_gold'
 OUTPUT_TXT = BASE_DIR / 'fase_3_execucao_analitica/outputs/txt/conclusoes_finais.txt'
 

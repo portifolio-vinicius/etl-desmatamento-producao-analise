@@ -27,7 +27,17 @@ pd.set_option('display.max_rows', 20)
 pd.set_option('display.float_format', lambda x: f'{x:,.2f}')
 
 # Paths
-BASE_DIR = Path('/home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS')
+def _repo_root() -> Path:
+    p = Path(__file__).resolve()
+    for d in (p.parent, *p.parents):
+        if (d / "requirements.txt").exists():
+            return d
+    raise RuntimeError(
+        "requirements.txt não encontrado. Execute a partir do clone do repositório."
+    )
+
+
+BASE_DIR = _repo_root()
 SILVER_DIR = BASE_DIR / 'data/02_silver'
 GOLD_DIR = BASE_DIR / 'data/03_gold'
 
