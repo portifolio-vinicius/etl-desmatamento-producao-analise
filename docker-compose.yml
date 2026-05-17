@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # Serviço principal para executar scripts
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: analise-dados-app
+    volumes:
+      # Persistir dados entre execuções
+      - ./data:/app/data
+      - ./logs:/app/logs
+      # Para desenvolvimento (opcional)
+      - ./src:/app/src
+    working_dir: /app
+    command: python src/ingestao/download_dados_parquet.py
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # Serviço para notebooks Jupyter (opcional)
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: analise-dados-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./src:/app/src
+      - ./notebooks_exploratorios:/app/notebooks_exploratorios
+    working_dir: /app
+    command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  # Serviço para Streamlit (opcional)
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: analise-dados-streamlit
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./src:/app/src
+    working_dir: /app
+    command: streamlit hello  # Substituir pelo seu script principal
+    environment:
+      - PYTHONUNBUFFERED=1
+
+volumes:
+  data:
+  logs:
