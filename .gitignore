@@ -14,6 +14,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Data (ignoring local data directories based on workspace structure)
+data/inmet_test/
 # notebooks/data/landing/
 # notebooks/data/bronze/
 
