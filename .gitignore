@@ -17,6 +17,17 @@ __pycache__/
 # notebooks/data/landing/
 # notebooks/data/bronze/
 
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Temporary test files
+teste_*.csv
+
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -27,4 +38,5 @@ ehthumbs.db
 Thumbs.db
 .qwen
 .windsurf/*
+.devin/
 scripts/temp/*
