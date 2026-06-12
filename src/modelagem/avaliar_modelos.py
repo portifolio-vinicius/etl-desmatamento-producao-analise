@@ -219,6 +219,7 @@ def avaliar_modelo_completo(
     diretorio_saida: Path,
     tipo_problema: str = "binario",
     executar_cv: bool = True,
+    prefixo_figuras: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Treina, avalia e persiste resultados de um modelo.
@@ -233,6 +234,7 @@ def avaliar_modelo_completo(
         diretorio_saida: Diretório para artefatos.
         tipo_problema: 'binario' ou 'multiclasse'.
         executar_cv: Se True, roda validação cruzada no treino.
+        prefixo_figuras: Prefixo do target nos nomes dos PNG (evita sobrescrita).
 
     Returns:
         Dicionário consolidado de resultados.
@@ -257,6 +259,8 @@ def avaliar_modelo_completo(
         resultado.update(validacao_cruzada(pipeline, X_treino, y_treino))
 
     slug = nome_modelo.lower().replace(" ", "_")
+    if prefixo_figuras:
+        slug = f"{prefixo_figuras}_{slug}"
     salvar_matriz_confusao(
         y_teste,
         y_predito,

@@ -121,6 +121,7 @@ def treinar_multiclasse(dataset: Optional[str] = None) -> List[dict]:
                 nome_modelo=nome_modelo,
                 diretorio_saida=diretorio_resultados,
                 tipo_problema="multiclasse",
+                prefixo_figuras=TARGET.replace("_proximo_ano", ""),
             )
         except Exception as erro:
             logger.error("Falha em multiclasse (%s): %s", nome_estrategia, erro)

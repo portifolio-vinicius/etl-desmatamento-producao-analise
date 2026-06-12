@@ -112,9 +112,18 @@ def _baseline(resultados: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     return None
 
 
-def _slug_figura(nome_modelo: str) -> str:
+def _slug_figura(nome_modelo: str, prefixo_target: Optional[str] = None) -> str:
     """Reproduz slug usado em avaliar_modelos.salvar_*."""
-    return nome_modelo.lower().replace(" ", "_")
+    slug = nome_modelo.lower().replace(" ", "_")
+    if prefixo_target:
+        return f"{prefixo_target}_{slug}"
+    return slug
+
+
+def _prefixo_target(item: Dict[str, Any]) -> str:
+    """Extrai prefixo de figuras a partir do campo target."""
+    target = item.get("target", "")
+    return str(target).replace("_proximo_ano", "") if target else ""
 
 
 def _extrair_classe_report(
@@ -158,9 +167,10 @@ def _formatar_metricas_multiclasse(item: Dict[str, Any]) -> str:
     return "".join(linhas) if linhas else "_Métricas por classe indisponíveis._\n"
 
 
-def _formatar_figuras_modelo(nome_modelo: str, binario: bool = True) -> str:
+def _formatar_figuras_modelo(item: Dict[str, Any], binario: bool = True) -> str:
     """Referencia figuras PNG do melhor modelo."""
-    slug = _slug_figura(nome_modelo)
+    nome_modelo = item.get("modelo", "")
+    slug = _slug_figura(nome_modelo, _prefixo_target(item))
     matriz = f"{CAMINHO_FIGURAS}/matriz_confusao_{slug}.png"
     linhas = [
         f"- Matriz de confusão: `{matriz}`\n",
@@ -437,7 +447,7 @@ a classe minoritária.
         )
         conteudo += _formatar_metricas_classe_positiva(melhor_desmatamento)
         conteudo += "\n### Figuras\n\n"
-        conteudo += _formatar_figuras_modelo(melhor_desmatamento["modelo"])
+        conteudo += _formatar_figuras_modelo(melhor_desmatamento)
         conteudo += """
 ### Conclusão
 
@@ -475,7 +485,7 @@ Para fiscalização preventiva, priorize recall da classe 1 e ROC-AUC, não F1 w
         )
         conteudo += _formatar_metricas_classe_positiva(melhor_embargos)
         conteudo += "\n### Figuras\n\n"
-        conteudo += _formatar_figuras_modelo(melhor_embargos["modelo"])
+        conteudo += _formatar_figuras_modelo(melhor_embargos)
         conteudo += """
 ### Conclusão
 
@@ -518,7 +528,7 @@ Classes:
         conteudo += "\n"
         conteudo += _formatar_metricas_multiclasse(melhor_multiclasse)
         conteudo += "\n### Figuras\n\n"
-        conteudo += _formatar_figuras_modelo(melhor_multiclasse["modelo"], binario=False)
+        conteudo += _formatar_figuras_modelo(melhor_multiclasse, binario=False)
         conteudo += """
 ### Conclusão
 

@@ -201,6 +201,7 @@ def treinar_target(
                     nome_modelo=f"{nome_modelo} ({nome_estrategia})",
                     diretorio_saida=diretorio_resultados,
                     tipo_problema="binario",
+                    prefixo_figuras=target.replace("_proximo_ano", ""),
                 )
             except Exception as erro:
                 logger.error("Falha em %s: %s", slug, erro)
