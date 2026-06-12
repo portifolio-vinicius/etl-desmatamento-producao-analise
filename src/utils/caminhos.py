@@ -39,6 +39,7 @@ class CaminhosDados:
     BRONZE_DIR = DATA_DIR / "01_bronze"
     SILVER_DIR = DATA_DIR / "02_silver"
     GOLD_DIR = DATA_DIR / "03_gold"
+    MODELAGEM_DIR = DATA_DIR / "04_modelagem"
     REPORTS_DIR = DATA_DIR / "04_reports"
     
     @classmethod
@@ -47,5 +48,6 @@ class CaminhosDados:
         Cria os diretórios de dados se não existirem.
         """
         for p in [cls.DATA_DIR, cls.LANDING_DIR, cls.BRONZE_DIR, 
-                  cls.SILVER_DIR, cls.GOLD_DIR, cls.REPORTS_DIR]:
+                  cls.SILVER_DIR, cls.GOLD_DIR, cls.MODELAGEM_DIR,
+                  cls.REPORTS_DIR]:
             p.mkdir(parents=True, exist_ok=True)
