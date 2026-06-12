@@ -1,7 +1,7 @@
 # Relatório de Modelagem de Classificação
 
 **Projeto:** Análise de Desmatamento, Atividade Econômica e Impacto Socioambiental na Amazônia Legal  
-**Gerado em:** 2026-06-12 17:56
+**Gerado em:** 2026-06-12 19:20
 
 ---
 
@@ -118,8 +118,8 @@ a classe minoritária.
 
 ### Figuras
 
-- Matriz de confusão: `../data/04_modelagem/resultados_metricas/matriz_confusao_kneighborsclassifier_(nenhuma).png`
-- Curva ROC: `../data/04_modelagem/resultados_metricas/curva_roc_kneighborsclassifier_(nenhuma).png`
+- Matriz de confusão: `../data/04_modelagem/resultados_metricas/matriz_confusao_tem_desmatamento_kneighborsclassifier_(nenhuma).png`
+- Curva ROC: `../data/04_modelagem/resultados_metricas/curva_roc_tem_desmatamento_kneighborsclassifier_(nenhuma).png`
 
 ### Conclusão
 
@@ -172,8 +172,8 @@ Para fiscalização preventiva, priorize recall da classe 1 e ROC-AUC, não F1 w
 
 ### Figuras
 
-- Matriz de confusão: `../data/04_modelagem/resultados_metricas/matriz_confusao_randomforestclassifier_(smote).png`
-- Curva ROC: `../data/04_modelagem/resultados_metricas/curva_roc_randomforestclassifier_(smote).png`
+- Matriz de confusão: `../data/04_modelagem/resultados_metricas/matriz_confusao_tem_embargos_randomforestclassifier_(smote).png`
+- Curva ROC: `../data/04_modelagem/resultados_metricas/curva_roc_tem_embargos_randomforestclassifier_(smote).png`
 
 ### Conclusão
 
@@ -210,7 +210,7 @@ Classes:
 
 ### Figuras
 
-- Matriz de confusão: `../data/04_modelagem/resultados_metricas/matriz_confusao_randomforestclassifier_(smote).png`
+- Matriz de confusão: `../data/04_modelagem/resultados_metricas/matriz_confusao_classe_risco_randomforestclassifier_(smote).png`
 
 ### Conclusão
 

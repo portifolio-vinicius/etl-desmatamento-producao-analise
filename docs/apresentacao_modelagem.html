@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modelagem de Classificação — Amazônia Legal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css" />
+  <style>
+    :root {
+      --verde-amazonia: #1b5e20;
+      --verde-claro: #2e7d32;
+      --cinza-texto: #37474f;
+    }
+    .reveal { color: var(--cinza-texto); font-size: 28px; }
+    .reveal h1, .reveal h2, .reveal h3 { color: var(--verde-amazonia); text-transform: none; }
+    .reveal h1 { font-size: 1.8em; margin-bottom: 0.4em; }
+    .reveal h2 { font-size: 1.35em; border-bottom: 3px solid var(--verde-claro); padding-bottom: 0.2em; }
+    .reveal .subtitle { color: #546e7a; font-size: 0.85em; margin-top: -0.5em; }
+    .reveal table { font-size: 0.62em; margin: 0.5em auto; }
+    .reveal table th { background: var(--verde-amazonia); color: #fff; }
+    .reveal table td, .reveal table th { padding: 0.35em 0.6em; }
+    .reveal .destaque { color: var(--verde-amazonia); font-weight: bold; }
+    .reveal .alerta { color: #c62828; font-weight: bold; }
+    .reveal .duas-colunas { display: grid; grid-template-columns: 1fr 1fr; gap: 1em; align-items: start; }
+    .reveal .duas-colunas img { max-height: 320px; width: 100%; object-fit: contain; }
+    .reveal .legenda-img { font-size: 0.55em; color: #78909c; margin-top: 0.3em; }
+    .reveal ul { font-size: 0.9em; }
+    .reveal .fluxo { font-size: 0.75em; color: #607d8b; margin-top: 1em; }
+    .reveal .capa-info { margin-top: 2em; font-size: 0.8em; }
+    .reveal blockquote { background: #f1f8e9; border-left: 4px solid var(--verde-claro); padding: 0.5em 1em; font-size: 0.85em; font-style: normal; }
+    .reveal .slide-numero { position: absolute; bottom: 12px; right: 24px; font-size: 0.5em; color: #90a4ae; }
+    .reveal .barras-desbalanceamento { font-size: 0.7em; margin-top: 0.8em; }
+    .reveal .barra-linha { display: grid; grid-template-columns: 140px 1fr 60px; gap: 0.5em; align-items: center; margin-bottom: 0.5em; }
+    .reveal .barra-fundo { background: #eceff1; border-radius: 4px; height: 22px; overflow: hidden; }
+    .reveal .barra-preenchimento { height: 100%; border-radius: 4px; }
+    .reveal .barra-preenchimento.major { background: #2e7d32; }
+    .reveal .barra-preenchimento.minor { background: #c62828; }
+    .reveal .tres-colunas { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.6em; }
+    .reveal .tres-colunas img { max-height: 280px; width: 100%; object-fit: contain; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1 -->
+      <section>
+        <h1>Modelagem Preditiva na Amazônia Legal</h1>
+        <p class="subtitle">Classificação supervisionada — desmatamento, embargos e risco municipal</p>
+        <div class="capa-info">
+          <p><strong>Projeto:</strong> Análise de Desmatamento, Atividade Econômica e Impacto Socioambiental</p>
+          <p><strong>Pergunta central:</strong> quais municípios merecem monitoramento preventivo no <span class="destaque">próximo ano</span>?</p>
+        </div>
+        <ul>
+          <li>Fontes: PRODES/DETER, IBAMA, IBGE, CHIRPS, preços agrícolas</li>
+          <li>Arquitetura: Bronze → Silver → Gold → <strong>04_modelagem</strong></li>
+          <li>Dataset: <code>dataset_preditivo_com_precos.parquet</code></li>
+        </ul>
+      </section>
+
+      <!-- Slide 2 -->
+      <section>
+        <h2>Dataset e preparação</h2>
+        <table>
+          <tr><th>Aspecto</th><th>Valor</th></tr>
+          <tr><td>Linhas brutas</td><td>796.560</td></tr>
+          <tr><td>Após dedup (<code>cod_ibge</code> + <code>ano</code>)</td><td><strong>22.280</strong></td></tr>
+          <tr><td>Features</td><td>41 numéricas + 3 categóricas</td></tr>
+          <tr><td>Treino / teste</td><td>11.140 / 5.570</td></tr>
+        </table>
+        <p><strong>Três targets:</strong></p>
+        <ul>
+          <li><code>tem_desmatamento_proximo_ano</code> — 99,5% classe 0</li>
+          <li><code>tem_embargos_proximo_ano</code> — 90% / 10%</li>
+          <li><code>classe_risco_proximo_ano</code> — baixo / medio / alto</li>
+        </ul>
+      </section>
+
+      <!-- Slide 3 -->
+      <section>
+        <h2>Metodologia</h2>
+        <ul>
+          <li>Target temporal: <code>groupby(cod_ibge).shift(-1)</code></li>
+          <li>Split temporal: treino <span class="destaque">2020–2021</span> → teste <span class="destaque">2022</span> (prevê 2023)</li>
+          <li>2023 não entra no teste (target 2024 inexistente)</li>
+          <li>Modelos: Dummy, Árvore, KNN, Random Forest</li>
+          <li>Balanceamento (só treino): nenhum, SMOTE, NearMiss</li>
+          <li>Validação cruzada estratificada (F1 weighted)</li>
+        </ul>
+        <blockquote>
+          Split temporal simula uso real: treinar no passado, avaliar em ano futuro não visto.
+        </blockquote>
+      </section>
+
+      <!-- Slide 4 — Desbalanceamento -->
+      <section>
+        <h2>Desbalanceamento das classes (treino)</h2>
+        <p style="font-size:0.8em">F1 weighted alto pode esconder falha na classe minoritária.</p>
+        <div class="barras-desbalanceamento">
+          <p><strong>Desmatamento</strong> — classe 1: 0,5%</p>
+          <div class="barra-linha">
+            <span>Classe 0</span>
+            <div class="barra-fundo"><div class="barra-preenchimento major" style="width:99.5%"></div></div>
+            <span>99,5%</span>
+          </div>
+          <div class="barra-linha">
+            <span>Classe 1</span>
+            <div class="barra-fundo"><div class="barra-preenchimento minor" style="width:0.5%"></div></div>
+            <span>0,5%</span>
+          </div>
+          <p style="margin-top:0.8em"><strong>Embargos</strong> — classe 1: 9,9%</p>
+          <div class="barra-linha">
+            <span>Classe 0</span>
+            <div class="barra-fundo"><div class="barra-preenchimento major" style="width:90.1%"></div></div>
+            <span>90,1%</span>
+          </div>
+          <div class="barra-linha">
+            <span>Classe 1</span>
+            <div class="barra-fundo"><div class="barra-preenchimento minor" style="width:9.9%"></div></div>
+            <span>9,9%</span>
+          </div>
+          <p style="margin-top:0.8em"><strong>Multiclasse</strong> — medio/alto: 0,2% cada</p>
+          <div class="barra-linha">
+            <span>Baixo</span>
+            <div class="barra-fundo"><div class="barra-preenchimento major" style="width:99.5%"></div></div>
+            <span>99,5%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5 -->
+      <section>
+        <h2>Resumo executivo</h2>
+        <table>
+          <tr>
+            <th>Problema</th><th>Melhor modelo</th><th>F1</th><th>ROC-AUC</th><th>Observação</th>
+          </tr>
+          <tr>
+            <td>Desmatamento</td><td>KNN (nenhuma)</td><td>0,9918</td><td>0,76</td><td class="alerta">F1 enganoso</td>
+          </tr>
+          <tr>
+            <td>Embargos</td><td>RF + SMOTE</td><td>0,8739</td><td>0,87</td><td>Mais equilibrado</td>
+          </tr>
+          <tr>
+            <td>Multiclasse</td><td>RF + SMOTE</td><td>0,9897</td><td>N/A</td><td class="alerta">F1 macro ~0,48</td>
+          </tr>
+        </table>
+        <p>Compare sempre com <strong>DummyClassifier</strong> e analise <strong>recall da classe positiva</strong>.</p>
+      </section>
+
+      <!-- Slide 6 -->
+      <section>
+        <h2>Desmatamento (binário)</h2>
+        <div class="duas-colunas">
+          <div>
+            <ul>
+              <li>Melhor F1: <strong>KNN (nenhuma)</strong> — 0,9918</li>
+              <li>Recall classe 1: <span class="destaque">30%</span></li>
+              <li>ROC-AUC: <span class="destaque">0,76</span> (baseline 0,50)</li>
+              <li>Dummy: recall classe 1 = <span class="alerta">0%</span></li>
+            </ul>
+            <p style="font-size:0.75em">Ganho real: detectar 14 de 46 municípios com desmatamento (vs. 0 do baseline).</p>
+          </div>
+          <div>
+            <img src="../data/04_modelagem/resultados_metricas/curva_roc_tem_desmatamento_kneighborsclassifier_(nenhuma).png" alt="Curva ROC — KNN desmatamento" />
+            <p class="legenda-img">Curva ROC — KNeighborsClassifier</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 7 -->
+      <section>
+        <h2>Desmatamento — matriz de confusão</h2>
+        <div class="duas-colunas">
+          <div>
+            <img src="../data/04_modelagem/resultados_metricas/matriz_confusao_tem_desmatamento_kneighborsclassifier_(nenhuma).png" alt="Matriz de confusão — KNN" />
+            <p class="legenda-img">KNN — melhor F1 weighted</p>
+          </div>
+          <div>
+            <img src="../data/04_modelagem/resultados_metricas/curva_roc_tem_desmatamento_randomforestclassifier_(smote).png" alt="Curva ROC — RF+SMOTE desmatamento" />
+            <p class="legenda-img">RF+SMOTE — melhor ROC-AUC (0,93), trade-off com recall</p>
+          </div>
+        </div>
+        <p class="legenda-img">NearMiss degradou performance (accuracy ~49%) — inadequado para classe &lt;1%</p>
+      </section>
+
+      <!-- Slide 8 -->
+      <section>
+        <h2>Embargos (binário)</h2>
+        <div class="duas-colunas">
+          <div>
+            <ul>
+              <li>Melhor: <strong>Random Forest + SMOTE</strong></li>
+              <li>F1 weighted: 0,8739 | ROC-AUC: 0,87</li>
+              <li>Recall classe 1: ~41% | Precision: ~56%</li>
+              <li>~293 embargos detectados de 722 reais</li>
+            </ul>
+            <p style="font-size:0.75em">Problema mais equilibrado — SMOTE ajudou de fato.</p>
+          </div>
+          <div>
+            <img src="../data/04_modelagem/resultados_metricas/matriz_confusao_tem_embargos_randomforestclassifier_(smote).png" alt="Matriz — RF+SMOTE embargos" />
+            <p class="legenda-img">Matriz de confusão — RF + SMOTE</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 9 -->
+      <section>
+        <h2>Embargos — curva ROC</h2>
+        <div class="duas-colunas">
+          <div>
+            <img src="../data/04_modelagem/resultados_metricas/curva_roc_tem_embargos_randomforestclassifier_(smote).png" alt="Curva ROC — RF+SMOTE embargos" />
+          </div>
+          <div>
+            <ul style="font-size:0.85em">
+              <li>ROC-AUC 0,87 — bem acima do Dummy (0,50)</li>
+              <li>SMOTE melhorou recall da classe positiva em +40 pp vs baseline</li>
+              <li>Modelo apoia <strong>priorização</strong>, não substitui fiscalização</li>
+            </ul>
+            <table style="font-size:0.55em">
+              <tr><th>Métrica</th><th>Dummy</th><th>RF+SMOTE</th></tr>
+              <tr><td>Recall classe 1</td><td>0%</td><td>41%</td></tr>
+              <tr><td>F1 classe 1</td><td>0%</td><td>47%</td></tr>
+              <tr><td>ROC-AUC</td><td>0,50</td><td>0,87</td></tr>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 10 -->
+      <section>
+        <h2>Risco multiclasse</h2>
+        <div class="duas-colunas">
+          <div>
+            <ul style="font-size:0.85em">
+              <li><strong>baixo</strong> — sem desmatamento no ano seguinte</li>
+              <li><strong>medio</strong> — área até a mediana entre positivos</li>
+              <li><strong>alto</strong> — área acima da mediana</li>
+            </ul>
+            <table>
+              <tr><th>Métrica</th><th>Valor</th></tr>
+              <tr><td>F1 weighted (RF+SMOTE)</td><td>0,9897</td></tr>
+              <tr><td>F1 macro</td><td class="alerta">0,48</td></tr>
+              <tr><td>Recall classe medio</td><td class="alerta">0%</td></tr>
+              <tr><td>Recall classe alto</td><td>35%</td></tr>
+            </table>
+          </div>
+          <div>
+            <img src="../data/04_modelagem/resultados_metricas/matriz_confusao_classe_risco_randomforestclassifier_(smote).png" alt="Matriz — multiclasse RF+SMOTE" />
+            <p class="legenda-img">Matriz de confusão — RF + SMOTE (multiclasse)</p>
+          </div>
+        </div>
+        <p style="font-size:0.7em">Apenas 46 positivos no teste (23 medio + 23 alto) — granularidade fine-grained inviável.</p>
+      </section>
+
+      <!-- Slide 11 -->
+      <section>
+        <h2>Alinhamento com notebooks do professor</h2>
+        <table>
+          <tr><th>Notebook</th><th>Tópico</th><th>Aplicação no projeto</th></tr>
+          <tr><td><strong>17</strong></td><td>Classificação</td><td>Dummy, Árvore, KNN, Random Forest</td></tr>
+          <tr><td><strong>18</strong></td><td>Validação e métricas</td><td>Split, baseline, matriz, ROC, CV</td></tr>
+          <tr><td><strong>19</strong></td><td>Multiclasse</td><td><code>classe_risco_proximo_ano</code></td></tr>
+        </table>
+        <p class="fluxo">Extensão: <code>imbalanced-learn</code> (SMOTE, NearMiss) para classes desbalanceadas</p>
+      </section>
+
+      <!-- Slide 12 -->
+      <section>
+        <h2>Limitações e conclusões</h2>
+        <div class="duas-colunas">
+          <div>
+            <h3 style="font-size:0.9em">Limitações</h3>
+            <ul style="font-size:0.8em">
+              <li>4 anos de dados (2020–2023)</li>
+              <li>Desbalanceamento extremo</li>
+              <li>CHIRPS e MapBiomas parciais</li>
+              <li>Métricas altas ≠ produção</li>
+            </ul>
+          </div>
+          <div>
+            <h3 style="font-size:0.9em">Próximos passos</h3>
+            <ul style="font-size:0.8em">
+              <li>Mais anos e MapBiomas completo</li>
+              <li>Tuning de threshold para recall</li>
+              <li>Modelos espaciais / painel longitudinal</li>
+            </ul>
+          </div>
+        </div>
+        <blockquote>
+          Pipeline ETL + ML com interpretação honesta. Embargos é o caso mais promissor;
+          desmatamento exige mais dados e métricas orientadas a recall.
+        </blockquote>
+        <p style="font-size:0.65em">Relatório: <code>docs/relatorio_modelagem_classificacao.md</code> · Scripts: <code>src/modelagem/</code></p>
+      </section>
+
+      <!-- Slide final -->
+      <section>
+        <h1>Obrigado!</h1>
+        <p class="subtitle">Perguntas?</p>
+        <ul style="font-size:0.8em; margin-top:2em">
+          <li>Relatório completo: <code>docs/relatorio_modelagem_classificacao.md</code></li>
+          <li>Roteiro do apresentador: <code>docs/roteiro_apresentacao_modelagem.md</code></li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      transition: 'slide',
+      width: 1280,
+      height: 720,
+      margin: 0.08,
+    });
+  </script>
+</body>
+</html>
