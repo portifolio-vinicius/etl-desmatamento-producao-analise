@@ -45,7 +45,7 @@ Na prática, isso representa pouco mais de 5.500 municípios observados ao longo
 
 **Responsável:** Pessoa 1
 
-“A metodologia foi construída para evitar vazamento temporal.
+“A metodologia foi construída para evitar vazamento temporal. A metodologia foi pensada para simular uma situação real: treinar com dados do passado e testar em um ano futuro, sem deixar o modelo acessar informações que ele não teria no momento da previsão.
 
 Para cada município, usamos `shift(-1)`, ou seja, as informações do ano atual são usadas para prever o resultado do ano seguinte.
 
@@ -69,6 +69,8 @@ Na classificação multiclasse, quase todos os registros ficam na classe baixo r
 
 Isso é essencial para interpretar os resultados. Métricas como acurácia e F1 weighted podem parecer muito boas mesmo quando o modelo praticamente não detecta a classe rara.”
 
+Acurácia e F1 weighted são métricas gerais. Como a maioria dos municípios está na classe sem desmatamento, essas métricas podem ficar altas mesmo quando o modelo quase não identifica os casos de desmatamento. Por isso também analisamos recall da classe positiva e ROC-AUC.
+
 **Transição para Pessoa 2:** “Com a base, a metodologia e o desbalanceamento explicados, a Pessoa 2 vai apresentar os principais resultados, começando pelo resumo executivo.”
 
 ---
@@ -83,9 +85,13 @@ Para desmatamento, o melhor F1 weighted foi do KNN sem balanceamento, com valor 
 
 Para embargos, o melhor modelo foi Random Forest com SMOTE, com F1 de 0,87 e ROC-AUC de 0,87. Esse foi o caso com desempenho mais equilibrado.
 
+ROC-AUC mede a capacidade do modelo de ordenar corretamente os casos. Quanto mais perto de 1, melhor ele separa municípios com e sem o evento. Um valor de 0,50 seria como chute aleatório
+
 Na classificação multiclasse, Random Forest com SMOTE também teve F1 weighted alto, mas o resultado por classe mostra dificuldade nas categorias médio e alto.
 
-Por isso, ao interpretar os modelos, não olhamos só F1 weighted. Também comparamos com DummyClassifier e damos atenção ao recall da classe positiva e à ROC-AUC.”
+Na multiclasse, o F1 weighted ficou muito alto porque quase todos os exemplos são de baixo risco. Mas quando damos o mesmo peso para baixo, médio e alto, usando F1 macro, o resultado cai para cerca de 0,48. Isso mostra que o modelo ainda não aprende bem as classes médio e alto.
+
+Este resumo mostra que os números altos precisam ser interpretados com cuidado. Em desmatamento e multiclasse, o F1 parece excelente, mas a base é muito desbalanceada, então o modelo acerta principalmente a classe majoritária. O caso mais confiável foi embargos, porque teve F1 e ROC-AUC bons e uma distribuição menos extrema. Por isso usamos o DummyClassifier como comparação e olhamos o recall da classe positiva, que mostra se o modelo realmente encontra os casos importantes.”
 
 ---
 
@@ -109,7 +115,7 @@ O ponto mais importante aqui é que o DummyClassifier já consegue um F1 weighte
 
 “Na matriz de confusão, conseguimos enxergar melhor a limitação do modelo.
 
-Dos 46 casos positivos de desmatamento no teste, o KNN identificou 14. Os outros 32 foram falsos negativos.
+A matriz mostra que o modelo acerta muito bem a classe sem desmatamento, com 5518 acertos. Mas o problema principal está na classe que nos interessa: dos 46 municípios que realmente tiveram desmatamento, o modelo identificou 14 e deixou 32 passar. Então, apesar do F1 weighted ser alto, o recall para desmatamento ainda é baixo, em torno de 30%.
 
 No contexto de fiscalização ambiental, falso negativo é um erro importante, porque significa deixar de sinalizar um município que de fato teve desmatamento.
 
@@ -129,9 +135,7 @@ Se o objetivo for priorizar municípios para fiscalização, talvez seja melhor 
 
 O melhor modelo foi Random Forest com SMOTE. Ele detectou cerca de 293 dos 722 casos positivos no conjunto de teste.
 
-Ainda existem muitos falsos negativos, mas o resultado é mais interpretável que no caso de desmatamento, porque a classe positiva representa cerca de 10% dos dados, e não apenas 0,5%.
-
-Aqui o SMOTE ajudou, porque criou exemplos sintéticos da classe minoritária durante o treino, melhorando a capacidade do modelo de reconhecer municípios com embargos no ano seguinte.”
+Aqui o melhor modelo foi Random Forest com SMOTE. O F1 weighted de 0,87 mostra bom desempenho geral, e a ROC-AUC de 0,87 indica que o modelo consegue separar bem municípios com e sem embargo. O ponto mais importante é o recall da classe positiva: dos 722 casos reais de embargo no teste, o modelo identificou 293, cerca de 41%. A precision de 56% significa que, quando o modelo aponta risco de embargo, um pouco mais da metade dos alertas está correta. Esse foi o problema mais equilibrado porque havia mais exemplos positivos do que no desmatamento, e o SMOTE ajudou o modelo a aprender melhor essa classe”
 
 ---
 
