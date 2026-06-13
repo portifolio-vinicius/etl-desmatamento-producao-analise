@@ -14,3 +14,4 @@ ipykernel==6.25.0
 python-dotenv==1.0.0
 duckdb==0.9.1
 streamlit==1.26.0
+imbalanced-learn==0.13.0

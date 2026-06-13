@@ -53,6 +53,7 @@ class CaminhosDados:
     BRONZE_DIR: Path = DATA_DIR / "01_bronze"
     SILVER_DIR: Path = DATA_DIR / "02_silver"
     GOLD_DIR: Path = DATA_DIR / "03_gold"
+    MODELAGEM_DIR: Path = DATA_DIR / "04_modelagem"
     REPORTS_DIR: Path = DATA_DIR / "04_reports"
     
     @classmethod
@@ -67,17 +68,18 @@ class CaminhosDados:
         >>> CaminhosDados.inicializar_pastas()
         >>> print("Pastas de dados inicializadas")
         """
-        pastas: List[Path] = [
-            cls.DATA_DIR, 
-            cls.LANDING_DIR, 
-            cls.BRONZE_DIR, 
-            cls.SILVER_DIR, 
-            cls.GOLD_DIR, 
-            cls.REPORTS_DIR
-        ]
+    pastas: List[Path] = [
+        cls.DATA_DIR,
+        cls.LANDING_DIR,
+        cls.BRONZE_DIR,
+        cls.SILVER_DIR,
+        cls.GOLD_DIR,
+        cls.MODELAGEM_DIR,
+        cls.REPORTS_DIR,
+    ]
         
-        for p in pastas:
-            p.mkdir(parents=True, exist_ok=True)
+    for p in pastas:
+        p.mkdir(parents=True, exist_ok=True)
     
     @classmethod
     def caminho_bronze(cls, nome_arquivo: str) -> CaminhoArquivo:

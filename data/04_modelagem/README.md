@@ -190,11 +190,50 @@ Para regerar o dataset:
 python3 src/consolidar_dataset_preditivo.py
 ```
 
+## Execução da Modelagem Supervisionada
+
+Scripts em `src/modelagem/` implementam classificação binária e multiclasse com split temporal
+(treino 2020-2022, teste 2023), deduplicação por município-ano, comparação de algoritmos e
+balanceamento de classes. O treino usa amostragem estratificada (máx. 50.000 linhas) para
+viabilizar SMOTE e Random Forest em tempo razoável.
+
+### Classificação binária — desmatamento no ano seguinte
+
+```bash
+python src/modelagem/treinar_classificacao_binaria.py --target tem_desmatamento_proximo_ano
+```
+
+### Classificação binária — embargos no ano seguinte
+
+```bash
+python src/modelagem/treinar_classificacao_binaria.py --target tem_embargos_proximo_ano
+```
+
+### Classificação multiclasse — risco (baixo / medio / alto)
+
+```bash
+python src/modelagem/treinar_classificacao_multiclasse.py
+```
+
+### Relatório consolidado
+
+```bash
+python src/modelagem/gerar_relatorio_modelagem.py
+```
+
+Saídas geradas:
+- `resultados_metricas/metricas_binario_*.json`
+- `resultados_metricas/metricas_multiclasse_risco.json`
+- `resultados_metricas/matriz_confusao_*.png`
+- `resultados_metricas/curva_roc_*.png`
+- `modelos/*.pkl`
+- `docs/relatorio_modelagem_classificacao.md`
+
+Documentação completa: [`docs/relatorio_modelagem_classificacao.md`](../../docs/relatorio_modelagem_classificacao.md)
+
 ## Próximos Passos Sugeridos
 
-1. **Análise Exploratória**: Entender distribuições e correlações
-2. **Feature Engineering**: Criar features adicionais se necessário
-3. **Seleção de Features**: Identificar as mais relevantes para cada target
-4. **Validação Cruzada**: Usar validação temporal (time-series cross-validation)
-5. **Modelagem**: Testar diferentes algoritmos (Random Forest, XGBoost, LightGBM)
-6. **Interpretação**: Usar SHAP values para entender importância das features
+1. **Interpretabilidade**: SHAP values para importância de features
+2. **Tuning**: GridSearchCV para hiperparâmetros
+3. **Validação temporal**: expanding window cross-validation
+4. **Integração MapBiomas**: enriquecer features de uso do solo

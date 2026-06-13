@@ -5,11 +5,15 @@ Script para validar qualidade do dataset preditivo.
 import pandas as pd
 import numpy as np
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).parent))
+from utils.caminhos import repo_root
 
 def validar_dataset():
     """Valida qualidade do dataset preditivo."""
     
-    caminho_dataset = Path('/home/vinicius/Downloads/estudo/fatec/SABADO-TE-ANALISE-DADOS/data/04_modelagem/dataset_preditivo_consolidado.parquet')
+    caminho_dataset = repo_root() / "data" / "04_modelagem" / "dataset_preditivo_consolidado.parquet"
     
     print("Carregando dataset...")
     df = pd.read_parquet(caminho_dataset)

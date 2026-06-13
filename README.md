@@ -183,6 +183,13 @@ Dataset consolidado para modelagem preditiva:
 - `src/analise/cadeia_global/` - Análise de cadeia global
 - `src/analise/consolidacao/` - Análises consolidadas
 
+### Modelagem Supervisionada
+- `src/modelagem/preparar_dados_modelagem.py` - Targets temporais e split treino/teste
+- `src/modelagem/treinar_classificacao_binaria.py` - Classificação binária (desmatamento/embargos)
+- `src/modelagem/treinar_classificacao_multiclasse.py` - Classificação multiclasse de risco
+- `src/modelagem/avaliar_modelos.py` - Métricas, matriz de confusão e validação cruzada
+- `src/modelagem/gerar_relatorio_modelagem.py` - Relatório consolidado em Markdown
+
 ## Instalação e Execução com Docker
 
 Este projeto usa Docker para garantir que rode em qualquer computador sem problemas de dependências.
@@ -210,6 +217,14 @@ docker-compose run app python src/transformacao/serie_historica/etl_serie_histor
 ### Scripts de Análise
 ```bash
 docker-compose run app python src/analise/eficiencia_economica/mvp_economico.py
+```
+
+### Scripts de Modelagem Supervisionada
+```bash
+docker-compose run app python src/modelagem/treinar_classificacao_binaria.py --target tem_desmatamento_proximo_ano
+docker-compose run app python src/modelagem/treinar_classificacao_binaria.py --target tem_embargos_proximo_ano
+docker-compose run app python src/modelagem/treinar_classificacao_multiclasse.py
+docker-compose run app python src/modelagem/gerar_relatorio_modelagem.py
 ```
 
 ### Jupyter Notebook (Opcional)
@@ -279,6 +294,14 @@ Executar os scripts em ordem na pasta `src/transformacao/`:
 python src/analise/eficiencia_economica/mvp_economico.py
 ```
 
+### Modelagem Supervisionada
+```bash
+python src/modelagem/treinar_classificacao_binaria.py --target tem_desmatamento_proximo_ano
+python src/modelagem/treinar_classificacao_binaria.py --target tem_embargos_proximo_ano
+python src/modelagem/treinar_classificacao_multiclasse.py
+python src/modelagem/gerar_relatorio_modelagem.py
+```
+
 ## Status Atual
 
 ```mermaid
@@ -295,10 +318,11 @@ pie title Status de Implementação
 - ✓ Preços e produção agrícola integrados (CONAB + Farmnews)
 - ✓ Indicadores derivados criados (risco_desmatamento, pressao_economica, boom_soja)
 - ✓ Arquitetura medallion implementada (Bronze → Silver → Gold → Modelagem)
+- ✓ Modelagem supervisionada: classificação binária e multiclasse com validação e métricas
 
 **Pendente:**
 - ⚠ MapBiomas - dados de cobertura e uso da terra
-- ⚠ Modelagem preditiva com ML (fora do escopo atual)
+- ⚠ Interpretabilidade avançada (SHAP) e tuning de hiperparâmetros
 
 ## Documentação
 
@@ -375,8 +399,8 @@ graph LR
 
 **Machine Learning:**
 - scikit-learn - Machine learning
+- imbalanced-learn - Balanceamento de classes (SMOTE, NearMiss)
 - statsmodels - Análise estatística
-- xgboost - Gradient boosting
 
 **Processamento Paralelo:**
 - asyncio - Downloads assíncronos
